@@ -77,3 +77,4 @@ if __name__ == '__main__':
     filename = '/etc/default/shellinabox'
     logger = mylogger("/opt/log/shellinabox_mc.log").initlog()
     shellinabox().run()
+
