@@ -3,9 +3,7 @@
 import os
 from lib.common_lib import mylogger
 
-proc_names = 'mysql','nginx','dhcp','xinetd','php','server.py','bmc_check.py','shellinaboxd','vnc'
-
-def check_proc(proc_names):
+def check_proc():
     for proc_name in proc_names:
         ps_str = 'ps aux |grep %s | grep -v grep' %proc_name
         x= os.popen(ps_str).read()
@@ -41,5 +39,6 @@ def check_proc(proc_names):
                 os.system('/etc/init.d/vncserver start')
 
 if __name__=='__main__':
+    proc_names = 'mysql','nginx','dhcp','xinetd','php','server.py','bmc_check.py','shellinaboxd','vnc'
     logger = mylogger("/opt/log/process.log").initlog()
-    check_proc(proc_names)
+    check_proc()
