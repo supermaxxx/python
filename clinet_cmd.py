@@ -5,7 +5,7 @@ from lib.common_lib import mylogger
 
 
 def help():
-    print 'Usage: python client.py $ipaddr $script start|stop|restart'
+    print 'Usage: python client_cmd.py $ipaddr $script start|stop|restart'
     sys.exit(1)
 
 class client(object):
