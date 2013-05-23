@@ -2,13 +2,22 @@
 import getopt
 import sys
 import socket
-from lib.common_lib import mylogger
+import logging
 
 RECVBUFLEN = 65535
 
 def help():
     print 'Usage: python client_cmd.py -i $server_ip -s nginx|mysql -o start|stop|restart'
     sys.exit(1)
+
+class mylogger(object):
+   def __init__(self,filename):
+       self.filename = filename
+   def initlog(self):
+       logging.basicConfig(filename=self.filename,level = logging.DEBUG, format = '%(asctime)s - %(levelname)s: %(message)s')
+       logger = logging.getLogger()
+       return logger
+
 
 class client(object):
     def __init__(self):
