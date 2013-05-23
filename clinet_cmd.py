@@ -35,7 +35,7 @@ class client(object):
             self.socket.connect((SERVER,PORT))
         except:
             print 'Address error connecting to server %s' %SERVER
-            logger.debug('Address error connection to server %s' %SERVER)
+            logger.debug('Address error connection to server' %SERVER)
             sys.exit(1)
 
         try: 
@@ -48,8 +48,8 @@ class client(object):
 #        self.socket.settimeout(120)
         recvstr  = self.socket.recv(RECVBUFLEN)
         if recvstr == 'OK':
-            print "Successful to run the command on Server."
-            logger.debug("Successful to run the command on Server.")
+            print "Successful to run the command on Server: %s with key: %s." % (SERVER, msg)
+            logger.debug("Successful to run the command on Server: %s with key: %s." % (SERVER, msg))
 
         try:
             self.socket.close()
