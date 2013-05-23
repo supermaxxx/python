@@ -61,12 +61,12 @@ class handler(threading.Thread):
             cmd = '/etc/init.d/%s %s' %( arr[0], arr[1] )
             rc = self.run_command(cmd)
             if rc == True:
-                print "Successful to run the command: %s" %cmd
-                logger.debug("Successful to run the command: %s" %cmd)
+                print "Successful to run the command: %s, clinet is %s" % (cmd, remote_ip)
+                logger.debug("Successful to run the command: %s, clinet is %s" % (cmd, remote_ip))
                 cs.send("True")
             else:
-                print "Failed to run the command: %s" %cmd
-                logger.debug("Failed to run the command: %s" %cmd)
+                print "Failed to run the command: %s, clinet is %s" % (cmd, remote_ip)
+                logger.debug("Failed to run the command: %s, clinet is %s" % (cmd, remote_ip))
                 cs.send("Failed")
              
             cs.close()
