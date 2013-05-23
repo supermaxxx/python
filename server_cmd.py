@@ -63,10 +63,11 @@ class handler(threading.Thread):
             if rc == True:
                 print "Successful to run the command: %s" %cmd
                 logger.debug("Successful to run the command: %s" %cmd)
-                cs.send("OK")
+                cs.send("True")
             else:
                 print "Failed to run the command: %s" %cmd
                 logger.debug("Failed to run the command: %s" %cmd)
+                cs.send("Failed")
              
             cs.close()
 
