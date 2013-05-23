@@ -3,7 +3,7 @@ import socket
 import sys
 import threading
 import commands
-from lib.common_lib import mylogger
+import logging
 
 SERVER = ''
 RECVBUFLEN = 65535
@@ -100,6 +100,15 @@ class Server(object):
             hdllist.append(hdl)
         for hdl in hdllist:
             hdl.join()
+
+
+class mylogger(object):
+   def __init__(self,filename):
+       self.filename = filename
+   def initlog(self):
+       logging.basicConfig(filename=self.filename,level = logging.DEBUG, format = '%(asctime)s - %(levelname)s: %(message)s')
+       logger = logging.getLogger()
+       return logger
 
 
 if __name__ == '__main__':
