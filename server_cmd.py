@@ -46,10 +46,14 @@ class handler(threading.Thread):
             if recvstr == '':
                 cs.close()
                 return
+
             try:
                 arr =  recvstr.split()
             except:
                 print 'msg can not be read.'
+                cs.close()
+                return
+
             if arr[0] not in ('nginx','mysql'):
                 print 'permission denied, %s' %arr[0]
                 cs.close()
