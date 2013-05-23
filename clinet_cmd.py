@@ -35,7 +35,7 @@ class client(object):
             self.socket.connect((SERVER,PORT))
         except:
             print 'Address error connecting to server %s' %SERVER
-            logger.debug('Address error connection to server')
+            logger.debug('Address error connection to server %s' %SERVER)
             sys.exit(1)
 
         try: 
