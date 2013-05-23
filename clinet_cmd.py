@@ -3,9 +3,10 @@ import sys
 import socket
 from lib.common_lib import mylogger
 
+RECVBUFLEN = 65535
 
 def help():
-    print 'Usage: python client_cmd.py $ipaddr $script start|stop|restart'
+    print 'Usage: python client_cmd.py -i 192.168.1.222 -s nginx -o start|stop|restart'
     sys.exit(1)
 
 class client(object):
@@ -33,6 +34,12 @@ class client(object):
             print 'Error Sending the data: %s' %e
             logger.debug('Error Sending the data')
             sys.exit(1)
+
+#        self.socket.settimeout(120)
+        recvstr  = self.socket.recv(RECVBUFLEN)
+        if recvstr == 'OK':
+            print "Successful to run the command on Server."
+            logger.debug("Successful to run the command on Server.")
 
         try:
             self.socket.close()
