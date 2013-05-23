@@ -47,9 +47,12 @@ class client(object):
 
 #        self.socket.settimeout(120)
         recvstr  = self.socket.recv(RECVBUFLEN)
-        if recvstr == 'OK':
+        if recvstr == 'True':
             print "Successful to run the command on Server: %s with key: %s." % (SERVER, msg)
             logger.debug("Successful to run the command on Server: %s with key: %s." % (SERVER, msg))
+        elif recvstr == 'Failed':
+            print "Failed to run the command on Server: %s with key: %s." % (SERVER, msg)
+            logger.debug("Failed to run the command on Server: %s with key: %s." % (SERVER, msg))
 
         try:
             self.socket.close()
