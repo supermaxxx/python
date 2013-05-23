@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import getopt
 import sys
 import socket
@@ -6,7 +7,7 @@ from lib.common_lib import mylogger
 RECVBUFLEN = 65535
 
 def help():
-    print 'Usage: python client_cmd.py -i 192.168.1.222 -s nginx -o start|stop|restart'
+    print 'Usage: python client_cmd.py -i $server_ip -s nginx|mysql -o start|stop|restart'
     sys.exit(1)
 
 class client(object):
@@ -62,6 +63,8 @@ if __name__ == '__main__':
                 option = value
             elif param in ('-h','--help'):
                 help()
+    else:
+        help()
     PORT = 3348
     msg  = script + ' ' + option
     client().send(msg)
