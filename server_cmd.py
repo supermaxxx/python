@@ -2,8 +2,9 @@
 import socket
 import sys
 import threading
-import commands
 import logging
+import subprocess
+
 
 SERVER = ''
 RECVBUFLEN = 65535
@@ -14,13 +15,6 @@ class handler(threading.Thread):
         threading.Thread.__init__(self)
         self.socket = socket
         print 'thread started!'
-
-    def run_command(self,cmd):
-        rc, out = commands.getstatusoutput(cmd)
-        if ( rc != 0 ):
-            return False
-        else:
-            return True
 
     def run(self):
         while True:
@@ -58,20 +52,21 @@ class handler(threading.Thread):
                 print 'permission denied, %s' %arr[0]
                 cs.close()
                 return
+
             cmd = '/etc/init.d/%s %s' %( arr[0], arr[1] )
-            rc = self.run_command(cmd)
-            if rc == True:
+            rc = subprocess.call("%s" %cmd,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+            if rc == 0:
                 print "Successful to run the command: %s, clinet is %s" % (cmd, remote_session)
                 logger.debug("Successful to run the command: %s, clinet is %s" % (cmd, remote_session))
                 cs.send("True")
             else:
                 print "Failed to run the command: %s, clinet is %s" % (cmd, remote_session)
                 logger.debug("Failed to run the command: %s, clinet is %s" % (cmd, remote_session))
-                cs.send("Failed")
-             
-            sys.exit()
-            cs.close()
+                cs.send("False")
 
+            cs.close()
+             
 
 class Server(object):
     def __init__(self,max_threads,server_port):
