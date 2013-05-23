@@ -47,14 +47,19 @@ class handler(threading.Thread):
                 cs.close()
                 return
             try:
-                str =  recvstr.split()
+                arr =  recvstr.split()
             except:
                 print 'msg can not be read.'
-            cmd = '/etc/init.d/%s %s' %( str[0], str[1] )
+            if arr[0] not in ('nginx','mysql'):
+                print 'permission denied, %s' %arr[0]
+                cs.close()
+                return
+            cmd = '/etc/init.d/%s %s' %( arr[0], arr[1] )
             rc = self.run_command(cmd)
             if rc == True:
                 print "Successful to run the command: %s" %cmd
                 logger.debug("Successful to run the command: %s" %cmd)
+                cs.send("OK")
             else:
                 print "Failed to run the command: %s" %cmd
                 logger.debug("Failed to run the command: %s" %cmd)
