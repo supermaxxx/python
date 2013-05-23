@@ -45,13 +45,13 @@ class client(object):
             logger.debug('Error Sending the data')
             sys.exit(1)
 
-        self.socket.settimeout(60)
+        self.socket.settimeout(15)
 
         recvstr  = self.socket.recv(RECVBUFLEN)
         if recvstr == 'True':
             print "Successful to run the command on Server: %s with key: %s." % (SERVER, msg)
             logger.debug("Successful to run the command on Server: %s with key: %s." % (SERVER, msg))
-        elif recvstr == 'Failed':
+        elif recvstr == 'False':
             print "Failed to run the command on Server: %s with key: %s." % (SERVER, msg)
             logger.debug("Failed to run the command on Server: %s with key: %s." % (SERVER, msg))
 
