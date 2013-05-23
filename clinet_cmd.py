@@ -21,7 +21,7 @@ class mylogger(object):
 
 class client(object):
     def __init__(self):
-        self.socket = None;
+        self.socket = None
 
     def send(self,string):
         try:
@@ -45,7 +45,8 @@ class client(object):
             logger.debug('Error Sending the data')
             sys.exit(1)
 
-#        self.socket.settimeout(120)
+        self.socket.settimeout(60)
+
         recvstr  = self.socket.recv(RECVBUFLEN)
         if recvstr == 'True':
             print "Successful to run the command on Server: %s with key: %s." % (SERVER, msg)
