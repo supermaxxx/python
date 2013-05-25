@@ -66,7 +66,7 @@ class shellinabox(object):
 
     def run(self):
         bmc_cmd = 'select bmc_ip,userid,password from server_info where sol = 1;'
-        rc,rows = mysql('root','server','server_info').get_response(bmc_cmd)
+        rc,rows = mysql('xxxx','xxxxxx','server_info').get_response(bmc_cmd)
         if rc:
             self.pre_action()
             self.add_head()
