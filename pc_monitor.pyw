@@ -108,7 +108,7 @@ def send_sms(fx_info, context):
 
 if __name__ == '__main__':
     localip = Getmyip().getip()
-    localipinfo = getIpInfo.getIpInfo(localip)
+    localipinfo = getIpInfo().getIpInfo(localip)
     mail_163 = {'server':'pop.163.com',
                  'user':'xxxxxx',
                  'password':'xxxxxx'}
