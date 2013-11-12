@@ -22,7 +22,7 @@ def send_sms(fx_info, context):
 
 
 ##part2 获取外网ip
-class getIp:
+class getIp(object):
     def getIp(self):
         try:
             myip = self.visit("http://www.ip138.com/ip2city.asp")
