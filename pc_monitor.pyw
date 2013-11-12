@@ -9,7 +9,19 @@ import email
 from email.header import decode_header
 from PyWapFetion import Fetion
 
-##part1 获取外网ip
+
+##part1 发送飞信
+def send_sms(fx_info, context):
+    try:
+        myfetion = Fetion(fx_info['user'],fx_info['password'])
+        myfetion.send('1376xxxxxxx', context, sm=True)
+        myfetion.logout()
+        return 1
+    except:
+        return 0
+
+
+##part2 获取外网ip
 class Getmyip:
     def getip(self):
         try:
@@ -30,7 +42,7 @@ class Getmyip:
         return re.search('\d+\.\d+\.\d+\.\d+',str).group(0)
 
 
-##part2 查找ip地址
+##part3 查找ip地址
 class getIpInfo(object):
     def __init__(self):
         self.url = "http://ip.taobao.com/service/getIpInfo.php?ip="
@@ -55,7 +67,7 @@ class getIpInfo(object):
         return city_address
 
 
-##part3 接收分析邮件，并执行相应的操作
+##part4 接收分析邮件，并执行相应的操作
 def accp_mail_pop3(mail_info):
     import poplib
     try:
@@ -94,16 +106,6 @@ def accp_mail_imap(mail_info):
     if fromwho == '1376xxxxxxx@139.com':
         if title == 'shutdown':
             return 0
-
-##part4 发送飞信
-def send_sms(fx_info, context):
-    try:
-        myfetion = Fetion(fx_info['user'],fx_info['password'])
-        myfetion.send('1376xxxxxxx', context, sm=True)
-        myfetion.logout()
-        return 1
-    except:
-        return 0
 
 
 if __name__ == '__main__':
