@@ -22,8 +22,8 @@ def send_sms(fx_info, context):
 
 
 ##part2 获取外网ip
-class Getmyip:
-    def getip(self):
+class getIp:
+    def getIp(self):
         try:
             myip = self.visit("http://www.ip138.com/ip2city.asp")
         except:
@@ -109,7 +109,7 @@ def accp_mail_imap(mail_info):
 
 
 if __name__ == '__main__':
-    localip = Getmyip().getip()
+    localip = getIp().getIp()
     localipinfo = getIpInfo().getIpInfo(localip)
     mail_163 = {'server':'pop.163.com',
                  'user':'xxxxxx',
