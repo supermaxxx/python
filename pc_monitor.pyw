@@ -9,8 +9,7 @@ import email
 from email.header import decode_header
 from PyWapFetion import Fetion
 
-##part1
-#获取外网ip
+##part1 获取外网ip
 class Getmyip:
     def getip(self):
         try:
@@ -29,34 +28,34 @@ class Getmyip:
         if url == opener.geturl():
             str = opener.read()
         return re.search('\d+\.\d+\.\d+\.\d+',str).group(0)
-		
-info_url = "http://ip.taobao.com/service/getIpInfo.php?ip="
 
-##part2
-#查找IP地址
-def ip_location(ip):
-    data = urllib.urlopen(info_url + ip).read()
-    datadict=json.loads(data)
-    for oneinfo in datadict:
-        if "code" == oneinfo:
-            if datadict[oneinfo] == 0:
-                return datadict["data"]["country"] + datadict["data"]["region"] + datadict["data"]["city"] + datadict["data"]["isp"]
 
-#定义IP与域名正则
-re_ipaddress = re.compile(r'^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$')
-re_domain = re.compile(r'[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?')
+##part2 查找ip地址
+class getIpInfo(object):
+    def __init__(self):
+        self.url = "http://ip.taobao.com/service/getIpInfo.php?ip="
+        self.re_ipaddress = re.compile(r'^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$')
+        self.re_domain = re.compile(r'[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?')
 
-def getIpInfo(input):
-    if re_ipaddress.match(input):
-        city_address = ip_location(input)
-        return input.strip() + ": " + city_address
-    elif(re_domain.match(input)):
-        result = socket.getaddrinfo(input.strip(), None)
-        ipaddr = result[0][4][0]
-        city_address = ip_location(ipaddr)
-        return input.strip() + ": " + city_address
+    def ip_location(self,ip):
+        data = urllib.urlopen(self.url + ip).read()
+        datadict=json.loads(data)
+        for oneinfo in datadict:
+            if "code" == oneinfo:
+                if datadict[oneinfo] == 0:
+                    return datadict["data"]["country"] + datadict["data"]["region"] + datadict["data"]["city"] + datadict["data"]["isp"]
 
-##part3
+    def getIpInfo(self,input):
+        if self.re_ipaddress.match(input):
+            city_address = self.ip_location(input)
+        elif (self.re_domain.match(input)):
+            result = socket.getaddrinfo(input.strip(), None)
+            ipaddr = result[0][4][0]
+            city_address = self.ip_location(ipaddr)
+        return city_address
+
+
+##part3 接收分析邮件，并执行相应的操作
 def accp_mail_pop3(mail_info):
     import poplib
     try:
@@ -96,7 +95,7 @@ def accp_mail_imap(mail_info):
         if title == 'shutdown':
             return 0
 
-##part4
+##part4 发送飞信
 def send_sms(fx_info, context):
     try:
         myfetion = Fetion(fx_info['user'],fx_info['password'])
@@ -106,9 +105,10 @@ def send_sms(fx_info, context):
     except:
         return 0
 
+
 if __name__ == '__main__':
     localip = Getmyip().getip()
-    localipinfo = getIpInfo(localip)
+    localipinfo = getIpInfo.getIpInfo(localip)
     mail_163 = {'server':'pop.163.com',
                  'user':'xxxxxx',
                  'password':'xxxxxx'}
