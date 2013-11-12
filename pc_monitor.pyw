@@ -33,7 +33,7 @@ class Getmyip:
                 try:
                     myip = self.visit("http://www.whereismyip.com/")
                 except:
-                    myip = "So sorry!!!"
+                    myip = "127.0.0.1"
         return myip
     def visit(self,url):
         opener = urllib2.urlopen(url)
