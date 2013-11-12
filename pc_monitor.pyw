@@ -48,7 +48,6 @@ class getIpInfo(object):
         self.url = "http://ip.taobao.com/service/getIpInfo.php?ip="
         self.re_ipaddress = re.compile(r'^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$')
         self.re_domain = re.compile(r'[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?')
-
     def ip_location(self,ip):
         data = urllib.urlopen(self.url + ip).read()
         datadict=json.loads(data)
@@ -56,7 +55,6 @@ class getIpInfo(object):
             if "code" == oneinfo:
                 if datadict[oneinfo] == 0:
                     return datadict["data"]["country"] + datadict["data"]["region"] + datadict["data"]["city"] + datadict["data"]["isp"]
-
     def getIpInfo(self,input):
         if self.re_ipaddress.match(input):
             city_address = self.ip_location(input)
