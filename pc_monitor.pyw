@@ -5,7 +5,7 @@ Created on Wed Nov 11 17:30 2013
 @author: wangyucheng
 """
 
-import urllib, urllib2
+import urllib
 import json
 import sys, os, re, time
 import socket
@@ -38,7 +38,7 @@ class getIp(object):
                     myip = "127.0.0.1"
         return myip
     def visit(self,url):
-        opener = urllib2.urlopen(url)
+        opener = urllib.urlopen(url)
         if url == opener.geturl():
             str = opener.read()
         return re.search('\d+\.\d+\.\d+\.\d+',str).group(0)	
@@ -114,7 +114,7 @@ class accp_mail(object):
 if __name__ == '__main__':
     localip = getIp().getIp()
     localipinfo = getIpInfo().getIpInfo(localip)
-    loguser = os.popen('echo %username%').readline()
+    loguser = os.popen('echo %username%').read()
     info = 'pc is started!!!\nlogin as %s' %loguser
     sms = info + unicode(localipinfo).encode("UTF-8")
 
