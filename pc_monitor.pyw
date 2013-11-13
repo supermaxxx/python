@@ -68,9 +68,9 @@ class getIpInfo(object):
 
 ##part4 接收邮件并执行相应操作
 class accp_mail(object):
-    def __init__(self, mail_info, feixin):
+    def __init__(self, mail_info, feixin_info):
         self.mail_info = mail_info
-        self.feixin = feixin
+        self.feixin_info = feixin_info
     def pop3(self):
         import poplib
         try:
@@ -107,7 +107,7 @@ class accp_mail(object):
             msg = self.pop3()
         title = email.Header.decode_header(msg['subject'])[0][0]
         fromwho = email.Header.decode_header(msg['from'])[0][0]
-        if fromwho == feixin['mail']:
+        if fromwho == self.feixin_info['mail']:
             if title == 'shutdown':
                 return 1
 
