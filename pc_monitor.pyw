@@ -15,10 +15,10 @@ from email.header import decode_header
 from PyWapFetion import Fetion
 
 ##part1 发送飞信
-def send_sms(feixin, context):
+def send_sms(feixin_info, context):
     try:
-        myfetion = Fetion(feixin['user'], feixin['password'])
-        myfetion.send(feixin['user'], context, sm=True)
+        myfetion = Fetion(feixin_info['user'], feixin_info['password'])
+        myfetion.send(feixin_info['user'], context, sm=True)
         myfetion.logout()
         return 1
     except:
@@ -66,52 +66,50 @@ class getIpInfo(object):
             city_address = self.ip_location(ipaddr)
         return city_address
 
-##part4 接收邮件
-def accp_mail_pop3(mail_info):
-    import poplib
-    try:
-        p = poplib.POP3(mail_info['server'])
-        p.user(mail_info['user'])
-        p.pass_(mail_info['password'])
-        ret = p.stat()
-    except poplib.error_proto,e:
-#        print "Login failed:",e
-        return 0
-        sys.exit(1)
-    item = p.list()[1][-1]
-    number,octets = item.split(' ')
-    lines = p.retr(number)[1]
-    msg = email.message_from_string("\n".join(lines))
-    return msg
-
-def accp_mail_imap(mail_info):
-    import imaplib
-    try:
-        m = imaplib.IMAP4(mail_info['server'])
-        m.login(mail_info['user'], mail_info['password'])
-    except:
-        return 0
-        sys.exit(1)
-    result,message = m.select()
-    num = message[0]
-    rc,data =  m.fetch(num, '(RFC822)')
-    msg = email.message_from_string(data[0][1])
-    return msg
-
-##part5 分析邮件并执行相应操作
-def action(mail_info, msg, feixin):
-    title = email.Header.decode_header(msg['subject'])[0][0]
-    fromwho = email.Header.decode_header(msg['from'])[0][0]
- #   _fromwho = email.Header.decode_header(msg['from'])[0][0]
- #   if mail_info['server'] == 'pop.qq.com':
- #       re_fromwho = re.compile(r'<.*>')
- #       __fromwho = re_fromwho.findall(_fromwho)
- #       fromwho = __fromwho[0].replace('<','').replace('>','')
- #   else:
- #       fromwho = _fromwho
-    if fromwho == feixin['mail']:
-        if title == 'shutdown':
-            return 1
+##part4 接收邮件并执行相应操作
+class accp_mail(object):
+    def __init__(self, mail_info, feixin):
+        self.mail_info = mail_info
+        self.feixin = feixin
+    def pop3(self):
+        import poplib
+        try:
+            p = poplib.POP3(self.mail_info['server'])
+            p.user(self.mail_info['user'])
+            p.pass_(self.mail_info['password'])
+            ret = p.stat()
+        except poplib.error_proto,e:
+#            print "Login failed:",e
+            return 0
+            sys.exit(1)
+        item = p.list()[1][-1]
+        number,octets = item.split(' ')
+        lines = p.retr(number)[1]
+        msg = email.message_from_string("\n".join(lines))
+        return msg
+    def imap4(self):
+        import imaplib
+        try:
+            m = imaplib.IMAP4(self.mail_info['server'])
+            m.login(self.mail_info['user'], self.mail_info['password'])
+        except:
+            return 0
+            sys.exit(1)
+        result,message = m.select()
+        num = message[0]
+        rc,data =  m.fetch(num, '(RFC822)')
+        msg = email.message_from_string(data[0][1])
+        return msg
+    def action(self):
+        if self.mail_info['server'] == 'mail.ucloud.cn':
+            msg = self.imap4()
+        elif self.mail_info['server'] == 'pop.163.com' or self.mail_info['server'] == 'pop.qq.com':
+            msg = self.pop3()
+        title = email.Header.decode_header(msg['subject'])[0][0]
+        fromwho = email.Header.decode_header(msg['from'])[0][0]
+        if fromwho == feixin['mail']:
+            if title == 'shutdown':
+                return 1
 
 
 if __name__ == '__main__':
@@ -121,15 +119,15 @@ if __name__ == '__main__':
     info = 'pc is started!!!\nlogin as %s' %loguser
     sms = info + unicode(localipinfo).encode("UTF-8")
 
-    feixin = {'user': '1376xxxx677',
-              'password': 'xxxxxx',
-              'mail': '1376xxxx677@139.com'}
-    mail_163 = {'server': 'pop.163.com',
-                 'user': 'xxxxxx',
-                 'password': 'xxxxxx'}
-    mail_qq = {'server': 'pop.qq.com',
-               'user': 'xxxxxx',
-               'password': 'xxxxxx'}
+    feixin =      {'user': '1376xxxx677',
+                   'password': 'xxxxxx',
+                   'mail': '1376xxxx677@139.com'}
+    mail_163 =    {'server': 'pop.163.com',
+                   'user': 'xxxxxx',
+                   'password': 'xxxxxx'}
+    mail_qq =     {'server': 'pop.qq.com',
+                   'user': 'xxxxxx',
+                   'password': 'xxxxxx'}
     mail_ucloud = {'server': 'mail.ucloud.cn',
                    'user': 'xxxxxx',
                    'password': 'xxxxxx'}
@@ -142,11 +140,7 @@ if __name__ == '__main__':
 
     while 1:
         time.sleep(10)
-        if mail_target['server'] == 'mail.ucloud.cn':
-            msg = accp_mail_imap(mail_target)
-        elif mail_target['server'] == 'pop.163.com' or mail_target['server'] == 'pop.qq.com':
-            msg = accp_mail_pop3(mail_target)
-        tag = action(mail_target, msg, feixin)
+        tag = accp_mail(mail_target, feixin).action()
 #        print tag
         if tag == 1:
             os.system('shutdown -s -t 3 -c closing...hahaha~~~')
