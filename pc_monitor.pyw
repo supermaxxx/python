@@ -15,10 +15,10 @@ from email.header import decode_header
 from PyWapFetion import Fetion
 
 ##part1 发送飞信
-def send_sms(fx_info, context):
+def send_sms(feixin, context):
     try:
-        myfetion = Fetion(fx_info['user'], fx_info['password'])
-        myfetion.send(fx_info['user'], context, sm=True)
+        myfetion = Fetion(feixin['user'], feixin['password'])
+        myfetion.send(feixin['user'], context, sm=True)
         myfetion.logout()
         return 1
     except:
@@ -121,6 +121,8 @@ if __name__ == '__main__':
     info = 'pc is started!!!\nlogin as %s' %loguser
     sms = info + unicode(localipinfo).encode("UTF-8")
 
+    feixin = {'user':'1376xxxx677',
+              'password':'xxxxxx'}
     mail_163 = {'server':'pop.163.com',
                  'user':'xxxxxx',
                  'password':'xxxxxx'}
@@ -130,13 +132,11 @@ if __name__ == '__main__':
     mail_ucloud = {'server':'mail.ucloud.cn',
                    'user':'xxxxxx',
                    'password':'xxxxxx'}
-    fx_info = {'user':'1376xxxx677',
-               'password':'xxxxxx'}
 
     #pop3: mail_qq, mail_163 / imap: mail_ucloud
     mail_target = mail_ucloud    #收件信息，需要修改
 
-    while send_sms(fx_info, sms) == 0:
+    while send_sms(feixin, sms) == 0:
         time.sleep(5)
 
     while 1:
