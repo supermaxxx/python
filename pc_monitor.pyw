@@ -39,7 +39,7 @@ class getIp(object):
             str = opener.read()
         return re.search('\d+\.\d+\.\d+\.\d+',str).group(0)	
 
-##part3 查找ip地址
+##part3 查找ip的地域信息
 class getIpInfo(object):
     def __init__(self):
         self.url = "http://ip.taobao.com/service/getIpInfo.php?ip="
