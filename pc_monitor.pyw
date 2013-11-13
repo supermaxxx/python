@@ -141,4 +141,4 @@ if __name__ == '__main__':
         tag = accp_mail(mail_target, feixin).getTag()
 #        print tag
         if tag == 1:
-            os.system('shutdown -s -t 3 -c closing...hahaha~~~')
+            os.system('shutdown -s -t 3 -c closing...')
