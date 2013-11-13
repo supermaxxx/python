@@ -65,7 +65,7 @@ class getIpInfo(object):
             city_address = self.ip_location(ipaddr)
         return city_address
 
-##part4 接收邮件并执行相应操作
+##part4 接收邮件,分析并返回tag
 class accp_mail(object):
     def __init__(self, mail_info, feixin_info):
         self.mail_info = mail_info
