@@ -115,7 +115,7 @@ if __name__ == '__main__':
     localip = getIp().getIp()
     localipinfo = getIpInfo().getIpInfo(localip)
     loguser = os.popen('echo %username%').read()
-    info = 'pc is started!!!\nlogin as %s' %loguser
+    info = 'PC is starting!!!\nLogin as %sIP: %s\nLocation: ' %(loguser, localip)
     sms = info + unicode(localipinfo).encode("UTF-8")
 
     feixin =      {'user': '1376xxxx677',
