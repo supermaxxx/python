@@ -9,17 +9,15 @@ import email
 from email.header import decode_header
 from PyWapFetion import Fetion
 
-
 ##part1 发送飞信
 def send_sms(fx_info, context):
     try:
         myfetion = Fetion(fx_info['user'],fx_info['password'])
-        myfetion.send('1376xxxxxxx', context, sm=True)
+        myfetion.send('13761211677', context, sm=True)
         myfetion.logout()
         return 1
     except:
         return 0
-
 
 ##part2 获取外网ip
 class getIp(object):
@@ -39,8 +37,7 @@ class getIp(object):
         opener = urllib2.urlopen(url)
         if url == opener.geturl():
             str = opener.read()
-        return re.search('\d+\.\d+\.\d+\.\d+',str).group(0)
-
+        return re.search('\d+\.\d+\.\d+\.\d+',str).group(0)	
 
 ##part3 查找ip地址
 class getIpInfo(object):
@@ -64,8 +61,7 @@ class getIpInfo(object):
             city_address = self.ip_location(ipaddr)
         return city_address
 
-
-##part4 接收分析邮件，并执行相应的操作
+##part4 接收邮件
 def accp_mail_pop3(mail_info):
     import poplib
     try:
@@ -75,17 +71,13 @@ def accp_mail_pop3(mail_info):
         ret = p.stat()
     except poplib.error_proto,e:
 #        print "Login failed:",e
-        return 1
+        return 0
         sys.exit(1)
     item = p.list()[1][-1]
     number,octets = item.split(' ')
     lines = p.retr(number)[1]
     msg = email.message_from_string("\n".join(lines))
-    title = email.Header.decode_header(msg['subject'])[0][0]
-    fromwho = email.Header.decode_header(msg['from'])[0][0]
-    if fromwho == '1376xxxxxxx@139.com':
-        if title == 'shutdown':
-            return 0
+    return msg
 
 def accp_mail_imap(mail_info):
     import imaplib
@@ -93,41 +85,62 @@ def accp_mail_imap(mail_info):
         m = imaplib.IMAP4(mail_info['server'])
         m.login(mail_info['user'], mail_info['password'])
     except:
-        return 1
+        return 0
         sys.exit(1)
     result,message = m.select()
     num = message[0]
     rc,data =  m.fetch(num, '(RFC822)')
     msg = email.message_from_string(data[0][1])
+    return msg
+
+##part5 分析邮件并执行相应操作
+def action(mail_info, msg):
     title = email.Header.decode_header(msg['subject'])[0][0]
     fromwho = email.Header.decode_header(msg['from'])[0][0]
-    if fromwho == '1376xxxxxxx@139.com':
+ #   _fromwho = email.Header.decode_header(msg['from'])[0][0]
+ #   if mail_info['server'] == 'pop.qq.com':
+ #       re_fromwho = re.compile(r'<.*>')
+ #       __fromwho = re_fromwho.findall(_fromwho)
+ #       fromwho = __fromwho[0].replace('<','').replace('>','')
+ #   else:
+ #       fromwho = _fromwho
+    if fromwho == '1376xxxx677@139.com':
         if title == 'shutdown':
-            return 0
+            return 1
 
 
 if __name__ == '__main__':
     localip = getIp().getIp()
     localipinfo = getIpInfo().getIpInfo(localip)
+    loguser = os.popen('echo %username%').readline()
+    info = 'pc is started!!!\nlogin as %s' %loguser
+    sms = info + unicode(localipinfo).encode("UTF-8")
+
     mail_163 = {'server':'pop.163.com',
                  'user':'xxxxxx',
                  'password':'xxxxxx'}
+    mail_qq = {'server':'pop.qq.com',
+               'user':'xxxxxx',
+               'password':'xxxxxx'}
     mail_ucloud = {'server':'mail.ucloud.cn',
                    'user':'xxxxxx',
                    'password':'xxxxxx'}
-    fx_info = {'user':'1376xxxxxxx',
+    fx_info = {'user':'1376xxxx677',
                'password':'xxxxxx'}
-    loguser = os.popen('echo %username%').readline()
-    info = 'Laopo is using PC! Stop her!\nlogin as %s' %loguser
-    sms = info + unicode(localipinfo).encode("UTF-8")
+
+    #pop3: mail_qq, mail_163 / imap: mail_ucloud
+    mail_target = mail_ucloud    #收件信息，需要修改
 
     while send_sms(fx_info, sms) == 0:
         time.sleep(5)
 
     while 1:
         time.sleep(10)
-        #pop3: mail_163 / imap: mail_ucloud
-        #tag = accp_mail_pop3(mail_163)
-        tag = accp_mail_imap(mail_ucloud)
-        if tag == 0:
+        if mail_target['server'] == 'mail.ucloud.cn':
+            msg = accp_mail_imap(mail_target)
+        elif mail_target['server'] == 'pop.163.com' or mail_target['server'] == 'pop.qq.com':
+            msg = accp_mail_pop3(mail_target)
+        tag = action(mail_target, msg)
+#        print tag
+        if tag == 1:
             os.system('shutdown -s -t 3 -c closing...hahaha~~~')
