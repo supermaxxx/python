@@ -99,7 +99,7 @@ def accp_mail_imap(mail_info):
     return msg
 
 ##part5 分析邮件并执行相应操作
-def action(mail_info, msg):
+def action(mail_info, msg, feixin):
     title = email.Header.decode_header(msg['subject'])[0][0]
     fromwho = email.Header.decode_header(msg['from'])[0][0]
  #   _fromwho = email.Header.decode_header(msg['from'])[0][0]
@@ -109,7 +109,7 @@ def action(mail_info, msg):
  #       fromwho = __fromwho[0].replace('<','').replace('>','')
  #   else:
  #       fromwho = _fromwho
-    if fromwho == '1376xxxx677@139.com':
+    if fromwho == feixin['mail']:
         if title == 'shutdown':
             return 1
 
@@ -121,17 +121,18 @@ if __name__ == '__main__':
     info = 'pc is started!!!\nlogin as %s' %loguser
     sms = info + unicode(localipinfo).encode("UTF-8")
 
-    feixin = {'user':'1376xxxx677',
-              'password':'xxxxxx'}
-    mail_163 = {'server':'pop.163.com',
-                 'user':'xxxxxx',
-                 'password':'xxxxxx'}
-    mail_qq = {'server':'pop.qq.com',
-               'user':'xxxxxx',
-               'password':'xxxxxx'}
-    mail_ucloud = {'server':'mail.ucloud.cn',
-                   'user':'xxxxxx',
-                   'password':'xxxxxx'}
+    feixin = {'user': '1376xxxx677',
+              'password': 'xxxxxx',
+              'mail': '1376xxxx677@139.com'}
+    mail_163 = {'server': 'pop.163.com',
+                 'user': 'xxxxxx',
+                 'password': 'xxxxxx'}
+    mail_qq = {'server': 'pop.qq.com',
+               'user': 'xxxxxx',
+               'password': 'xxxxxx'}
+    mail_ucloud = {'server': 'mail.ucloud.cn',
+                   'user': 'xxxxxx',
+                   'password': 'xxxxxx'}
 
     #pop3: mail_qq, mail_163 / imap: mail_ucloud
     mail_target = mail_ucloud    #收件信息，需要修改
@@ -145,7 +146,7 @@ if __name__ == '__main__':
             msg = accp_mail_imap(mail_target)
         elif mail_target['server'] == 'pop.163.com' or mail_target['server'] == 'pop.qq.com':
             msg = accp_mail_pop3(mail_target)
-        tag = action(mail_target, msg)
+        tag = action(mail_target, msg, feixin)
 #        print tag
         if tag == 1:
             os.system('shutdown -s -t 3 -c closing...hahaha~~~')
