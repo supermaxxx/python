@@ -9,7 +9,6 @@ import urllib
 import json
 import sys, os, re, time
 import socket
-import smtplib
 import email
 from PyWapFetion import Fetion
 
