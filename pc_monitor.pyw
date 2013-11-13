@@ -12,8 +12,8 @@ from PyWapFetion import Fetion
 ##part1 发送飞信
 def send_sms(fx_info, context):
     try:
-        myfetion = Fetion(fx_info['user'],fx_info['password'])
-        myfetion.send('13761211677', context, sm=True)
+        myfetion = Fetion(fx_info['user'], fx_info['password'])
+        myfetion.send(fx_info['user'], context, sm=True)
         myfetion.logout()
         return 1
     except:
