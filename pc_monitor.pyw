@@ -1,5 +1,10 @@
 #!D:\Python27\pythonw.exe
 # -*- coding: utf-8 -*-
+"""
+Created on Wed Nov 11 17:30 2013
+@author: wangyucheng
+"""
+
 import urllib, urllib2
 import json
 import sys, os, re, time
