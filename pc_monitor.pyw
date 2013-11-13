@@ -99,6 +99,7 @@ class accp_mail(object):
         msg = email.message_from_string(data[0][1])
         return msg
     def getTag(self):
+        #pop3: mail_qq, mail_163 / imap: mail_ucloud
         if self.mail_info['server'] == 'mail.ucloud.cn':
             msg = self.imap4()
         elif self.mail_info['server'] == 'pop.163.com' or self.mail_info['server'] == 'pop.qq.com':
@@ -130,7 +131,6 @@ if __name__ == '__main__':
                    'user': 'xxxxxx',
                    'password': 'xxxxxx'}
 
-    #pop3: mail_qq, mail_163 / imap: mail_ucloud
     mail_target = mail_ucloud
 
     while send_sms(feixin, sms) == 0:
