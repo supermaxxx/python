@@ -98,7 +98,7 @@ class accp_mail(object):
         rc,data =  m.fetch(num, '(RFC822)')
         msg = email.message_from_string(data[0][1])
         return msg
-    def action(self):
+    def getTag(self):
         if self.mail_info['server'] == 'mail.ucloud.cn':
             msg = self.imap4()
         elif self.mail_info['server'] == 'pop.163.com' or self.mail_info['server'] == 'pop.qq.com':
@@ -138,7 +138,7 @@ if __name__ == '__main__':
 
     while 1:
         time.sleep(10)
-        tag = accp_mail(mail_target, feixin).action()
+        tag = accp_mail(mail_target, feixin).getTag()
 #        print tag
         if tag == 1:
             os.system('shutdown -s -t 3 -c closing...hahaha~~~')
