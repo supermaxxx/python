@@ -11,7 +11,6 @@ import sys, os, re, time
 import socket
 import smtplib
 import email
-from email.header import decode_header
 from PyWapFetion import Fetion
 
 ##part1 发送飞信
