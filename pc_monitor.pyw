@@ -132,7 +132,7 @@ if __name__ == '__main__':
                    'password': 'xxxxxx'}
 
     #pop3: mail_qq, mail_163 / imap: mail_ucloud
-    mail_target = mail_ucloud    #收件信息，需要修改
+    mail_target = mail_ucloud
 
     while send_sms(feixin, sms) == 0:
         time.sleep(5)
