@@ -24,7 +24,10 @@ def randomIP():
             random.randint(2, 200) ]
     return '.'.join(map(lambda x: str(x), ip))
 
-_listIP = _listMAC = _xlist = _ylist = []
+_listIP = []
+_listMAC = []
+_xlist = []
+_ylist = []
 
 n = int(sys.argv[1])
 n_try = int(n * 1.5)
@@ -37,7 +40,8 @@ for i in range(1,n_try+1):
     _listIP.append(randomIP())
     _listMAC.append(randomMAC())
 
-listIP = listMAC = []
+listIP = []
+listMAC = []
 [listIP.append(i) for i in _listIP if not i in listIP]
 [listMAC.append(i) for i in _listMAC if not i in listMAC]
 len_listIP = len(listIP)
