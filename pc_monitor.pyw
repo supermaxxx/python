@@ -36,7 +36,7 @@ class getIp(object):
                 except:
                     myip = "127.0.0.1"
         return myip
-    def visit(self,url):
+    def visit(self, url):
         opener = urllib.urlopen(url)
         if url == opener.geturl():
             str = opener.read()
