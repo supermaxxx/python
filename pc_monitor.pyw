@@ -40,7 +40,7 @@ class getIp(object):
         opener = urllib.urlopen(url)
         if url == opener.geturl():
             str = opener.read()
-        return re.search('\d+\.\d+\.\d+\.\d+',str).group(0)	
+        return re.search('\d+\.\d+\.\d+\.\d+', str).group(0)	
 
 ##part3 查找ip的地域信息
 class getIpInfo(object):
@@ -51,7 +51,7 @@ class getIpInfo(object):
         self.input = input
     def ip_location(self,ip):
         data = urllib.urlopen(self.url + ip).read()
-        datadict=json.loads(data)
+        datadict = json.loads(data)
         for oneinfo in datadict:
             if "code" == oneinfo:
                 if datadict[oneinfo] == 0:
@@ -77,7 +77,7 @@ class accp_mail(object):
             p.user(self.mail_info['user'])
             p.pass_(self.mail_info['password'])
             ret = p.stat()
-        except poplib.error_proto,e:
+        except poplib.error_proto, e:
 #            print "Login failed:",e
             return 0
             sys.exit(1)
