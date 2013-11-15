@@ -44,10 +44,11 @@ class getIp(object):
 
 ##part3 查找ip的地域信息
 class getIpInfo(object):
-    def __init__(self):
+    def __init__(self, input):
         self.url = "http://ip.taobao.com/service/getIpInfo.php?ip="
         self.re_ipaddress = re.compile(r'^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$')
         self.re_domain = re.compile(r'[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?')
+        self.input = input
     def ip_location(self,ip):
         data = urllib.urlopen(self.url + ip).read()
         datadict=json.loads(data)
@@ -55,11 +56,11 @@ class getIpInfo(object):
             if "code" == oneinfo:
                 if datadict[oneinfo] == 0:
                     return datadict["data"]["country"] + datadict["data"]["region"] + datadict["data"]["city"] + datadict["data"]["isp"]
-    def getIpInfo(self,input):
-        if self.re_ipaddress.match(input):
-            city_address = self.ip_location(input)
-        elif (self.re_domain.match(input)):
-            result = socket.getaddrinfo(input.strip(), None)
+    def getIpInfo(self):
+        if self.re_ipaddress.match(self.input):
+            city_address = self.ip_location(self.input)
+        elif (self.re_domain.match(self.input)):
+            result = socket.getaddrinfo(self.input.strip(), None)
             ipaddr = result[0][4][0]
             city_address = self.ip_location(ipaddr)
         return city_address
@@ -113,7 +114,7 @@ class accp_mail(object):
 
 if __name__ == '__main__':
     localip = getIp().getIp()
-    localipinfo = getIpInfo().getIpInfo(localip)
+    localipinfo = getIpInfo(localip).getIpInfo()
     loguser = os.popen('echo %username%').read()
     info = 'PC is starting!!!\nLogin as %sIP: %s\nLocation: ' %(loguser, localip)
     sms = info + unicode(localipinfo).encode("UTF-8")
