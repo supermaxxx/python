@@ -1,8 +1,0 @@
-# 解决 UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-78: ordinal not in range(128)...
-
-# 在py文件的最开始加上:
-
-import sys
-
-reload(sys)   
-sys.setdefaultencoding('utf8')
