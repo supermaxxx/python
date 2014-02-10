@@ -50,7 +50,7 @@ def getmovie(b, key):
 if __name__ == "__main__":
     while 1:
         dramas = [{'id':1,'name':'来自星星的你','turl':'http://www.iqiyi.com/a_19rrgja8xd.html'},
-                  {'id':2,'name':'识骨寻踪-第九季','turl':'http://www.iqiyi.com/a_19rrifsvfq.html'}
+                  {'id':2,'name':'识骨寻踪（第九季）','turl':'http://www.iqiyi.com/a_19rrifsvfq.html'}
         ]
         msg = "可以播放的剧集（Drama）: "
         print exchange(msg)
