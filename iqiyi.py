@@ -1,5 +1,6 @@
 #!D:\Python27\python.exe
 # -*- coding: utf-8 -*-
+
 import time
 import sys
 import urllib
@@ -48,15 +49,15 @@ def getmovie(b, key):
 
 if __name__ == "__main__":
     while 1:
-        movie = [{'id':1,'name':'来自星星的你','turl':'http://www.iqiyi.com/a_19rrgja8xd.html'},
-                 {'id':2,'name':'识骨寻踪-第九季','turl':'http://www.iqiyi.com/a_19rrifsvfq.html'}
+        dramas = [{'id':1,'name':'来自星星的你','turl':'http://www.iqiyi.com/a_19rrgja8xd.html'},
+                  {'id':2,'name':'识骨寻踪-第九季','turl':'http://www.iqiyi.com/a_19rrifsvfq.html'}
         ]
-        msg = "可以播放的剧集: "
+        msg = "可以播放的剧集（Drama）: "
         print exchange(msg)
-        for m in movie:
-            print str(m['id']) + ': ' + exchange(m['name'])
+        for d in dramas:
+            print str(d['id']) + ': ' + exchange(d['name'])
         userChoice = int(input('Choose a Drama: '))
-        id,name,turl=getmovie(movie,userChoice)
+        id,name,turl=getmovie(dramas,userChoice)
         reload(sys)
         sys.setdefaultencoding('gbk')
         dramaItems = Iqiyi().getItem(turl)
@@ -64,7 +65,7 @@ if __name__ == "__main__":
             print di
         diLen = len(dramaItems)
         userChoice = int(input('Chose a number of the Drama: '))
-        if userChoice >= 1 and userChoice <=diLen:
+        if userChoice >= 1 and userChoice <= diLen:
             dramaItems[userChoice-1].openDrama()
         time.sleep(1)
         os.system("cls")
