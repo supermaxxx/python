@@ -1,5 +1,0 @@
-# 需求：['1:a','2:b','3:c'] 转换为 {’1′: ‘a’, ’3′: ‘c’, ’2′: ‘b’}
-a = {}
-b = ['1:a','2:b','3:c']
-map(lambda x:a.setdefault(x.split(':')[0], x.split(':')[1]), b)
-print a
