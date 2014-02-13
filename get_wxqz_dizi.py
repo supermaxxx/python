@@ -4,7 +4,7 @@ import urllib
 from bs4 import BeautifulSoup
 
 #def a(b):
-#    return b.encode('utf-8').replace('<p align="center">','')[:-4]
+#    return b.encode('utf-8')
 
 url = 'http://bbs.anzhi.com/thread-8278415-1-1.html'
 response = urllib.urlopen(url)
