@@ -1,6 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#
+"""
+Created on Fri Feb 14 17:30 2014
+@author: wangyucheng
+"""
+
 
 import urllib
 from bs4 import BeautifulSoup
