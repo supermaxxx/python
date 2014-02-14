@@ -5,7 +5,6 @@ Created on Fri Feb 14 17:30 2014
 @author: wangyucheng
 """
 
-
 import urllib
 from bs4 import BeautifulSoup
 from datetime import date, timedelta
