@@ -7,12 +7,12 @@ def Fibonacci(num):
     return res[1:]
 
 def Fibonacci2(num):
-    n,a,b = 0,0,1
+    i,a,b = 0,0,1
     res = []
-    while n < num:
+    while i < num:
         res.append(b)
         a,b = b,a+b
-        n = n+1
+        i = i + 1
     return res
 
 print Fibonacci(10)
