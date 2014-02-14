@@ -14,4 +14,12 @@ b = ['1:a','2:b','3:c']
 map(lambda x:a.setdefault(x.split(':')[0], x.split(':')[1]), b)
 print a
 
-3)
+3)斐波那契数列 [1,1,2,3,5,8,13,21...]
+res = [0,1]
+def Fibonacci(num):
+    i = 0
+    while i < num-1:
+        res.append(res[i]+res[i+1])
+        i+=1
+    return res[1:]
+print Fibonacci(10)
