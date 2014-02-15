@@ -13,18 +13,18 @@ from datetime import date, timedelta
 def cs(a):
     return a.decode('utf-8')
 
-now = date.today()
-tomorrow = now + timedelta(1)
-days = [str(now),str(tomorrow)]
+today = date.today()
+tomorrow = today + timedelta(1)
+days = [str(today),str(tomorrow)]
 url = 'http://cinema.hipiao.com/dadi_jiading'
 response = urllib.urlopen(url)
 html = response.read()
 soup = BeautifulSoup(html)
-for w in days:
-    msg = cs("大地数字影院--上海嘉定罗宾森广场--电影排片表--%s\n\n" %(w.replace('-','/')))
+for day in days:
+    msg = cs("大地数字影院--上海嘉定罗宾森广场--电影排片表--%s\n\n" %(day.replace('-','/')))
     movieList = soup.findAll('div', attrs={'id':'planDataList'})
     if(movieList):
-        lis = movieList[0].findAll('li', attrs={'day':w})
+        lis = movieList[0].findAll('li', attrs={'day':day})
         for li in lis:
             #pm = li.find('div').text    #片名(地区)
             pm = li['film']    #片名
