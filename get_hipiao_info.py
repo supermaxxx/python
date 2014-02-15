@@ -42,7 +42,7 @@ for w in days:
             cts = li.findAll('div', attrs={'class':'ciname_table'})
             for ct in cts:
                 tr = ct.findAll('tr')
-                msg += cs('放映时间 语种/制式 会员价/原价: ')  + '\n'
+                msg += cs('放映时间 语种/制式 会员价/原价: \n')
                 for tds in tr:
                     td = tds.findAll('td')
                     if len(td) > 0:
