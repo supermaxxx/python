@@ -1,9 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-"""
+
+'''
 Created on Fri Feb 14 17:30 2014
 @author: wangyucheng
-"""
+'''
 
 import urllib
 from bs4 import BeautifulSoup
@@ -33,22 +34,22 @@ for w in days:
             yys = ps[1].text.replace(' / ',',').split()[1].split(',')    #演员
             yy = yys[0] + ',' + yys[1] if len(yys) > 1 else yys[0]    #演员（取最多前2个）
             dq = ps[2].text.replace(' ',',').split()[2].replace(',','')    #地区
-            msg += cs('片名:') + pm + '\n'
-            msg += cs('片长:') + pc + '\n'
-            msg += cs('导演:') + dy + '\n'
-            msg += cs('演员:') + yy + '\n'
-            msg += cs('地区:') + dq + '\n'
+            msg += cs('片名: ') + pm + '\n'
+            msg += cs('片长: ') + pc + '\n'
+            msg += cs('导演: ') + dy + '\n'
+            msg += cs('演员: ') + yy + '\n'
+            msg += cs('地区: ') + dq + '\n'
             cts = li.findAll('div', attrs={'class':'ciname_table'})
             for ct in cts:
                 tr = ct.findAll('tr')
-                msg += cs('放映时间 语种/制式 会员价/原价')  + '\n'
+                msg += cs('放映时间 语种/制式 会员价/原价: ')  + '\n'
                 for tds in tr:
                     td = tds.findAll('td')
                     if len(td) > 0:
                         sijian = td[0].text    #放映时间
                         yuyan = td[1].text    #语种/制式
-                        jg = td[4].text[1:] + cs('元/') + td[3].text[1:-3] + cs('元')    #会员价/原价
-                        msg += sijian + ' ' + yuyan + ' ' + jg + '\n'
+                        jg =  td[4].text[1:] + cs('元/') + td[3].text[1:-3] + cs('元')    #会员价/原价
+                        msg += sijian + '    ' + yuyan + ' ' + jg + '\n'
             msg += '\n'
     m = msg.encode('utf-8')
     print m
