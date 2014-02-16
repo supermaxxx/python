@@ -21,7 +21,7 @@ response = urllib.urlopen(url)
 html = response.read()
 soup = BeautifulSoup(html)
 for day in days:
-    msg = cs("大地数字影院--上海嘉定罗宾森广场--电影排片表--%s\n\n" %(day.replace('-','/')))
+    msg = cs("<大地数字影院--上海嘉定罗宾森广场--电影排片表--%s>\n\n" %(day.replace('-','/')))
     movieList = soup.findAll('div', attrs={'id':'planDataList'})
     if(movieList):
         lis = movieList[0].findAll('li', attrs={'day':day})
@@ -62,7 +62,7 @@ result:
 [root@localhost test]# date
 Sun Feb 16 20:07:03 CST 2014
 [root@localhost test]# python get_hipiao_info.py 
-大地数字影院--上海嘉定罗宾森广场--电影排片表--2014/02/16
+<大地数字影院--上海嘉定罗宾森广场--电影排片表--2014/02/16>
 
 片名: 澳门风云
 片长: 95分钟
@@ -98,7 +98,7 @@ Sun Feb 16 20:07:03 CST 2014
 21:40    国语/3D立体 35元/45元
 
 
-大地数字影院--上海嘉定罗宾森广场--电影排片表--2014/02/17
+<大地数字影院--上海嘉定罗宾森广场--电影排片表--2014/02/17>
 
 片名: 澳门风云
 片长: 95分钟
