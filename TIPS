@@ -1,4 +1,4 @@
-1)解决 UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-78: ordinal not in range(128)...
+1> 解决 UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-78: ordinal not in range(128)...
 
 # 在py文件的最开始加上:
 
@@ -8,10 +8,30 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 
-2)['1:a','2:b','3:c'] 转换为 {’1′: ‘a’, ’3′: ‘c’, ’2′: ‘b’}
+2> ['1:a','2:b','3:c'] 转换为 {’1′: ‘a’, ’3′: ‘c’, ’2′: ‘b’}
 a = {}
 b = ['1:a','2:b','3:c']
 map(lambda x:a.setdefault(x.split(':')[0], x.split(':')[1]), b)
 print a
 
-3)
+3> 列表去重
+>>> l = [3,1,2,5,5,10,12,2,5,2]
+方法1:
+>>> res=[]
+>>> for i in l:
+...     if i not in res:
+...         res.append(i)
+... 
+>>> print res
+方法2:
+>>> res=[]
+>>> [res.append(x) for x in l if x not in res]
+[None, None, None, None, None, None]
+>>> print res
+[3, 1, 2, 5, 10, 12]
+方法3:
+>>> l = set(l)    #顺序会改变
+>>> print l
+set([1, 2, 3, 5, 10, 12])
+
+4> 
