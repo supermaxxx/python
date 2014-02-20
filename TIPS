@@ -1,9 +1,6 @@
 1> 解决 UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-78: ordinal not in range(128)...
-
 # 在py文件的最开始加上:
-
 import sys
-
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -13,6 +10,7 @@ a = {}
 b = ['1:a','2:b','3:c']
 map(lambda x:a.setdefault(x.split(':')[0], x.split(':')[1]), b)
 print a
+
 
 3> 列表去重
 >>> l = [3,1,2,5,5,10,12,2,5,2]
@@ -34,5 +32,6 @@ print a
 >>> l = set(l)    #顺序会改变
 >>> print l
 set([1, 2, 3, 5, 10, 12])
+
 
 4> 
