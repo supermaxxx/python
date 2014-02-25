@@ -162,21 +162,21 @@ if __name__ == '__main__':
 
 结果>
 @client
-[root@192_168_8_212 ~]# python client.py
+[root@192_168_8_212 ~]# python client.py        #1
 get
-[root@192_168_8_212 ~]# python client.py
+[root@192_168_8_212 ~]# python client.py        #2
 get
 
 @server
 [root@192_168_8_221 ~]#  python server.py 
-accept ('192.168.8.212', 33090) connect         #在client运行client.py
+accept ('192.168.8.212', 33090) connect         #1
 Info: 192.168.8.212 Machine Added.
-accept ('192.168.8.212', 33106) connect         #在client再次运行client.py
+accept ('192.168.8.212', 33106) connect         #2
 Info: 192.168.8.212 Data Delete.
 Info: 192.168.8.212 Update Successfully.
 
 @mysql
-mysql> select * from machine;
+mysql> select * from machine;                   #1
 +----+---------------+------------+------+------+-------------------+-------------------+---------------------+
 | id | ip            | sm         | cpu  | mem  | eth0              | eth1              | modify_time         |
 +----+---------------+------------+------+------+-------------------+-------------------+---------------------+
@@ -184,7 +184,7 @@ mysql> select * from machine;
 +----+---------------+------------+------+------+-------------------+-------------------+---------------------+
 1 row in set (0.00 sec)
 
-mysql> select * from machine;
+mysql> select * from machine;                   #2
 +----+---------------+------------+------+------+-------------------+-------------------+---------------------+
 | id | ip            | sm         | cpu  | mem  | eth0              | eth1              | modify_time         |
 +----+---------------+------------+------+------+-------------------+-------------------+---------------------+
