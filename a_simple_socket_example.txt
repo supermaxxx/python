@@ -143,12 +143,12 @@ def getMachineInfo():
     mem = str(memi)
     #网卡device name和对应的mac地址
     cmd = "cat /etc/udev/rules.d/70-persistent-net.rules | grep 'SUBSYSTEM' | grep 'net' | awk '{print mac=$4,$7}'"
-    nets = run_command(cmd)
-    net = ''
-    for n in nets.split('\n'):
+    nics = run_command(cmd)
+    nic = ''
+    for n in nics.split('\n'):
         mac = n.split('"')[1]
         dev = n.split('"')[3]
-        net += dev + '=' + mac + '###'
+        nic += dev + '=' + mac + '###'
     m = 'sm=%s###ip=%s###cpu=%s###mem=%s###%s' %(sm,ip,cpu,mem,net)
     msg = m[:-3]         #需要被post的字符串
     return msg
