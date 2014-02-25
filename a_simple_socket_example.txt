@@ -59,13 +59,13 @@ def server():
                 cmd = "insert into machine (%s) values (%s)" %(kk[:-1],vv[:-1])
                 rc,out = mysql('test','test','test').get_response(cmd)
                 if rc==True:
-                    print "Machine: %s is add." %target_ip
+                    print "Machine: %s is added." %target_ip
             elif len(out)==1:
                 for k,v in msg.items():
                     cmd = "update machine set %s='%s' where ip='%s';" %(k,v,target_ip)
                     rc,out = mysql('test','test','test').get_response(cmd)
                     if rc==True:
-                        print "Machine: %s update %s as %s successfully" %(target_ip,k,v)
+                        print "Machine: %s update %s as %s successfully." %(target_ip,k,v)
 if __name__ == '__main__':
     SERVER = "192.168.8.221"
     PORT = 12306
@@ -151,11 +151,11 @@ mysql> select * from machine;
 
 [root@192_168_8_221 ~]#  python server.py 
 accept ('192.168.8.212', 53740) connect                                          #第一次运行client.py
-Machine: 192.168.8.212 is add.
+Machine: 192.168.8.212 is added.
 accept ('192.168.8.212', 53751) connect                                          #第二次运行client.py
-Machine: 192.168.8.212 update mem as 4 successfully
-Machine: 192.168.8.212 update ip as 192.168.8.212 successfully
-Machine: 192.168.8.212 update sm as 4CV314DHRN successfully
-Machine: 192.168.8.212 update cpu as 2 successfully
-Machine: 192.168.8.212 update eth1 as 88:51:fb:49:ed:22 successfully
-Machine: 192.168.8.212 update eth0 as 88:51:fb:49:ed:11 successfully
+Machine: 192.168.8.212 update mem as 4 successfully.
+Machine: 192.168.8.212 update ip as 192.168.8.212 successfully.
+Machine: 192.168.8.212 update sm as 4CV314DHRN successfully.
+Machine: 192.168.8.212 update cpu as 2 successfully.
+Machine: 192.168.8.212 update eth1 as 88:51:fb:49:ed:22 successfully.
+Machine: 192.168.8.212 update eth0 as 88:51:fb:49:ed:11 successfully.
