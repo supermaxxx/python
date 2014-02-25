@@ -70,9 +70,10 @@ id int(4) not null primary key auto_increment,
 ip varchar(15) default null,       
 sm varchar(20) default null,       
 cpu int(2) default 0,                 
-mem int(3) default 0,                 
-nic varchar(200) default null)     
-ENGINE=myisam DEFAULT CHARSET=utf8;
+mem int(3) default 0,
+eth0 varchar(17) default null,
+eth1 varchar(17) default null
+)ENGINE=myisam DEFAULT CHARSET=utf8;
 
 
 6> [Shell] 脚本：输入一个用户名，返回该用户的home目录
