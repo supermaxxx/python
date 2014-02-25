@@ -1,0 +1,140 @@
+server_ip: 192.168.8.221
+mysql_ip: 192.168.221
+client_ip: 192.168.212
+
+
+1> 数据库
+#创建数据库
+create database test;
+#授权
+GRANT ALL PRIVILEGES ON test.* TO 'test'@'localhost' IDENTIFIED BY 'test' WITH GRANT OPTION;
+#创建表
+create table machine(
+id int(4) not null primary key auto_increment,
+ip varchar(15) default null,
+sm varchar(20) default null,
+cpu varchar(2) default 0,
+mem varchar(3) default 0,
+eth0 varchar(17) default null,
+eth1 varchar(17) default null
+)ENGINE=myisam DEFAULT CHARSET=utf8;
+
+
+2> server.py
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+import socket
+import sys
+from python_lib.common_lib import mysql
+#服务器端
+def server():
+    ser=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    ser.bind((SERVER, PORT))
+    ser.listen(5)
+    while 1:
+        client,addr=ser.accept()
+        print 'accept %s connect'%(addr,)
+        data=client.recv(1024)
+        if data:
+            dat = data.split('###')
+            msg = {}
+            for da in dat:
+                d = da.split('=')
+                key = d[0]
+                value = d[1]
+                msg[key] = value
+        client.send('get')
+        client.close()
+        #处理msg
+        target_ip = msg['ip']
+        kk=''
+        vv=''
+        for k,v in msg.items():
+            kk += k + ','
+            vv += "'" + v + "',"
+        cmd = "select 1 from machine where ip='%s';" %target_ip
+        rc,out = mysql('test','test','test').get_response(cmd)
+        if rc==True:
+            if len(out)==0:
+                cmd = "insert into machine (%s) values (%s)" %(kk[:-1],vv[:-1])
+                rc,out = mysql('test','test','test').get_response(cmd)
+                if rc==True:
+                    print "Machine: %s is add." %target_ip
+            elif len(out)==1:
+                for k,v in msg.items():
+                    cmd = "update machine set %s='%s' where ip='%s';" %(k,v,target_ip)
+                    rc,out = mysql('test','test','test').get_response(cmd)
+                    if rc==True:
+                        print "Machine: %s update %s as %s successfully" %(target_ip,k,v)
+if __name__ == '__main__':
+    SERVER = "192.168.8.221"
+    PORT = 12306
+    server()
+
+
+3> client.py
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+import sys
+import socket
+import commands
+#socket通信客户端
+def client():
+    try:
+        mysocket=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    except socket.error, e:
+        print 'Error create socket: %s' %e
+        sys.exit(1)
+    try:
+        mysocket.connect((SERVER, PORT))
+    except:
+        print 'Address error connecting to server %s' %SERVER
+        sys.exit(1)
+    try:
+        mysocket.send(msg)
+    except socket.error, e:
+        print 'Error Sending the data: %s' %e
+        sys.exit(1)
+    while 1:
+        data=mysocket.recv(1024)
+        if data:
+           print data
+        else:
+            break
+    mysocket.close()
+def run_command(cmd):
+    rc,out = commands.getstatusoutput(cmd)
+    if rc == 0:
+        return out
+    else:
+        sys.exit(1)
+def machine():
+    cmd = "dmidecode -t system |grep 'Serial Number' | awk '{print $3}'"
+    sm = run_command(cmd)
+    cmd = "ifconfig br0 | grep 'inet addr' | awk -F ':' '{print $2}' | awk '{print $1}'"
+    ip = run_command(cmd)
+    cmd = "cat /proc/cpuinfo | grep processor | wc -l"
+    cpu = run_command(cmd)
+    cmd = "dmidecode -t memory | grep Size | grep 'MB' | awk '{print $2}'"
+    mems = run_command(cmd)
+    memi = 0
+    memss = mems.split('\n')
+    for me in memss:
+        memi += int(me)/1024
+    mem = str(memi)
+#    cmd = "cat /etc/udev/rules.d/70-persistent-net.rules | grep 'SUBSYSTEM' | grep 'net' | awk '{print mac=$4,$7}'"
+    cmd = "cat /root/soft/70-persistent-net.rules | grep 'SUBSYSTEM' | grep 'net' | awk '{print mac=$4,$7}'"
+    nets = run_command(cmd)
+    net = ''
+    for n in nets.split('\n'):
+        mac = n.split('"')[1]
+        dev = n.split('"')[3]
+        net += dev + '=' + mac + '###'
+    m = 'sm=%s###ip=%s###cpu=%s###mem=%s###%s' %(sm,ip,cpu,mem,net)
+    msg = m[:-3]
+    return msg
+if __name__ == '__main__':
+    SERVER = "192.168.8.221"
+    PORT = 12306
+    msg = machine()
+    client()
