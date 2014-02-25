@@ -13,8 +13,8 @@ create table machine(
 id int(4) not null primary key auto_increment,
 ip varchar(15) default null,
 sm varchar(20) default null,
-cpu varchar(2) default 0,
-mem varchar(3) default 0,
+cpu varchar(2) default '0',
+mem varchar(3) default '0',
 eth0 varchar(17) default null,
 eth1 varchar(17) default null,
 modify_time varchar(19) default '1999-12-31 23:59:59'
@@ -62,7 +62,7 @@ def server():
                 if rc==True:
                     print "Info: %s Machine Added." %target_ip
             elif len(out)==1:
-                cmd = "update machine set sm=null,cpu=null,mem=null,eth0=null,eth1=null,modify_time=Now() where ip='%s';" %target_ip
+                cmd = "update machine set sm=null,cpu='0',mem='0',eth0=null,eth1=null,modify_time=Now() where ip='%s';" %target_ip
                 rc,out = mysql('test','test','test').get_response(cmd)
                 if rc==True:
                     print "Info: %s Data Delete." %target_ip
