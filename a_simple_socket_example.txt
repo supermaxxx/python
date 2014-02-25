@@ -149,7 +149,7 @@ def getMachineInfo():
         mac = n.split('"')[1]
         dev = n.split('"')[3]
         nic += dev + '=' + mac + '###'
-    m = 'sm=%s###ip=%s###cpu=%s###mem=%s###%s' %(sm,ip,cpu,mem,net)
+    m = 'sm=%s###ip=%s###cpu=%s###mem=%s###%s' %(sm,ip,cpu,mem,nic)
     msg = m[:-3]         #需要被post的字符串
     return msg
 if __name__ == '__main__':
