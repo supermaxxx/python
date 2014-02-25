@@ -1,18 +1,18 @@
-1> 解决 UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-78: ordinal not in range(128)...
+1> [Python] 解决 UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-78: ordinal not in range(128)...
 # 在py文件的最开始加上:
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
 
-2> ['1:a','2:b','3:c'] 转换为 {’1′: ‘a’, ’3′: ‘c’, ’2′: ‘b’}
+2> [Python] ['1:a','2:b','3:c'] 转换为 {’1′: ‘a’, ’3′: ‘c’, ’2′: ‘b’}
 a = {}
 b = ['1:a','2:b','3:c']
 map(lambda x:a.setdefault(x.split(':')[0], x.split(':')[1]), b)
 print a
 
 
-3> 列表去重
+3> [Python] 列表去重
 >>> l = [3,1,2,5,5,10,12,2,5,2]
 方法1:
 >>> res=[]
@@ -34,7 +34,7 @@ print a
 set([1, 2, 3, 5, 10, 12])
 
 
-4> 简单的socket通信
+4> [Python] 简单的socket通信
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import socket
@@ -64,4 +64,24 @@ def server():
         client.close()
 
 
-5> 
+5> [Mysql] mysql建表语句，设置字符集为utf-8
+SQL> create table machine(                         
+id int(4) not null primary key auto_increment,
+ip varchar(15) default null,       
+sm varchar(20) default null,       
+cpu int(2) default 0,                 
+mem int(3) default 0,                 
+nic varchar(200) default null)     
+ENGINE=myisam DEFAULT CHARSET=utf8;
+
+
+6> [Shell] 脚本：输入一个用户名，返回该用户的home目录
+#!/bin/sh
+echo -n "Please enter the user: "
+read user
+cat /etc/passwd|awk -F ":" -v var=$user '{if($1==var) {print "user:"$1"  uid:"$3"  home:"$6""; exit;}}'
+#awk应该是做了个for循环，从下面这句注释掉额语句的结果可知。
+#cat /etc/passwd|awk -F ":" -v var=$user '{if($1==var) {print "user:"$1"  uid:"$3"  home:"$6""; exit;} else {print ""$1" is not matched."}}'
+
+
+7> 
