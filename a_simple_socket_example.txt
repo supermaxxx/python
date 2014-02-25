@@ -140,8 +140,8 @@ def getMachineInfo():
         mac = n.split('"')[1]
         dev = n.split('"')[3]
         net += dev + '=' + mac + '###'
-    m = 'sm=%s###ip=%s###cpu=%s###mem=%s###%s' %(sm,ip,cpu,mem,net)    #需要被post的字符串
-    msg = m[:-3]
+    m = 'sm=%s###ip=%s###cpu=%s###mem=%s###%s' %(sm,ip,cpu,mem,net)
+    msg = m[:-3]         #需要被post的字符串
     return msg
 if __name__ == '__main__':
     SERVER = "192.168.8.221"
