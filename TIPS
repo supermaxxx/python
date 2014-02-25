@@ -34,4 +34,34 @@ print a
 set([1, 2, 3, 5, 10, 12])
 
 
-4> 
+4> 简单的socket通信
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+import socket
+#socket通信客户端
+def client():
+    mysocket=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    mysocket.connect(('127.0.0.1',8000))
+    mysocket.send('hello')
+    while 1:
+        data=mysocket.recv(1024)
+        if data:
+           print data
+        else:
+            break
+    mysocket.close()
+#服务器端
+def server():
+    ser=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    ser.bind(('127.0.0.1',8000))
+    ser.listen(5)
+    while 1:
+        client,addr=ser.accept()
+        print 'accept %s connect'%(addr,)
+        data=client.recv(1024)
+        print data
+        client.send('get')
+        client.close()
+
+
+5> 
