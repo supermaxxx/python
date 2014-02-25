@@ -55,11 +55,13 @@ def server():
         cmd = "select 1 from machine where ip='%s';" %target_ip
         rc,out = mysql('test','test','test').get_response(cmd)
         if rc==True:
+            #如果数据库里不存在，则insert
             if len(out)==0:
                 cmd = "insert into machine (%s) values (%s)" %(kk[:-1],vv[:-1])
                 rc,out = mysql('test','test','test').get_response(cmd)
                 if rc==True:
                     print "Info: %s is added." %target_ip
+            #如果数据库里存在，先清空，再update
             elif len(out)==1:
                 cmd = "update machine set sm=null,cpu=null,mem=null,eth0=null,eth1=null where ip='%s';" %target_ip
                 rc,out = mysql('test','test','test').get_response(cmd)
@@ -113,12 +115,16 @@ def run_command(cmd):
     else:
         sys.exit(1)
 def getMachineInfo():
+    #服务器的序列号
     cmd = "dmidecode -t system |grep 'Serial Number' | awk '{print $3}'"
     sm = run_command(cmd)
-    cmd = "ifconfig br0 | grep 'inet addr' | awk -F ':' '{print $2}' | awk '{print $1}'"
+    #eth0的ip地址
+    cmd = "ifconfig eth0 | grep 'inet addr' | awk -F ':' '{print $2}' | awk '{print $1}'"
     ip = run_command(cmd)
+    #cpu核数，单位：个
     cmd = "cat /proc/cpuinfo | grep processor | wc -l"
     cpu = run_command(cmd)
+    #内存大小，单位：GB
     cmd = "dmidecode -t memory | grep Size | grep 'MB' | awk '{print $2}'"
     mems = run_command(cmd)
     memi = 0
@@ -126,6 +132,7 @@ def getMachineInfo():
     for me in memss:
         memi += int(me)/1024
     mem = str(memi)
+    #网卡device name和对应的mac地址
     cmd = "cat /etc/udev/rules.d/70-persistent-net.rules | grep 'SUBSYSTEM' | grep 'net' | awk '{print mac=$4,$7}'"
     nets = run_command(cmd)
     net = ''
@@ -133,7 +140,7 @@ def getMachineInfo():
         mac = n.split('"')[1]
         dev = n.split('"')[3]
         net += dev + '=' + mac + '###'
-    m = 'sm=%s###ip=%s###cpu=%s###mem=%s###%s' %(sm,ip,cpu,mem,net)
+    m = 'sm=%s###ip=%s###cpu=%s###mem=%s###%s' %(sm,ip,cpu,mem,net)    #需要被post的字符串
     msg = m[:-3]
     return msg
 if __name__ == '__main__':
