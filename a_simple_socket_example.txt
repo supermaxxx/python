@@ -122,8 +122,7 @@ def machine():
     for me in memss:
         memi += int(me)/1024
     mem = str(memi)
-#    cmd = "cat /etc/udev/rules.d/70-persistent-net.rules | grep 'SUBSYSTEM' | grep 'net' | awk '{print mac=$4,$7}'"
-    cmd = "cat /root/soft/70-persistent-net.rules | grep 'SUBSYSTEM' | grep 'net' | awk '{print mac=$4,$7}'"
+    cmd = "cat /etc/udev/rules.d/70-persistent-net.rules | grep 'SUBSYSTEM' | grep 'net' | awk '{print mac=$4,$7}'"
     nets = run_command(cmd)
     net = ''
     for n in nets.split('\n'):
@@ -138,3 +137,25 @@ if __name__ == '__main__':
     PORT = 12306
     msg = machine()
     client()
+
+
+
+结果>
+mysql> select * from machine;
++----+---------------+------------+------+------+-------------------+-------------------+
+| id | ip            | sm         | cpu  | mem  | eth0              | eth1              |
++----+---------------+------------+------+------+-------------------+-------------------+
+|  1 | 192.168.8.212 | 4CV314DHRN | 2    | 4    | 88:51:fb:49:ed:11 | 88:51:fb:49:ed:22 |
++----+---------------+------------+------+------+-------------------+-------------------+
+1 row in set (0.00 sec)
+
+[root@192_168_8_221 ~]#  python server.py 
+accept ('192.168.8.212', 53740) connect                                          #第一次运行client.py
+Machine: 192.168.8.212 is add.
+accept ('192.168.8.212', 53751) connect                                          #第二次运行client.py
+Machine: 192.168.8.212 update mem as 4 successfully
+Machine: 192.168.8.212 update ip as 192.168.8.212 successfully
+Machine: 192.168.8.212 update sm as 4CV314DHRN successfully
+Machine: 192.168.8.212 update cpu as 2 successfully
+Machine: 192.168.8.212 update eth1 as 88:51:fb:49:ed:22 successfully
+Machine: 192.168.8.212 update eth0 as 88:51:fb:49:ed:11 successfully
