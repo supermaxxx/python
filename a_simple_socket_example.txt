@@ -19,6 +19,8 @@ eth0 varchar(17) default null,
 eth1 varchar(17) default null,
 modify_time varchar(19) default '1999-12-31 23:59:59'
 )ENGINE=myisam DEFAULT CHARSET=utf8;
+#清除表数据（测试用）
+TRUNCATE table machine;
 
 
 2> server.py
