@@ -60,7 +60,7 @@ def server():
         cmd = "select 1 from machine where sn='%s';" %(target_sn)
         rc,output = mysql('test','test','test').get_response(cmd)
         if rc==True:
-            num = len(output)
+            num = len(output)    #这个SN号对应的信息条数
             #如果不存在，插入数据
             if num == 0:
                 cmd = "insert into machine (%smodify_time) values (%sNow())" %(kk,vv)
