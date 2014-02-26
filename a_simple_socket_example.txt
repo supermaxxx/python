@@ -12,7 +12,7 @@ GRANT ALL PRIVILEGES ON test.* TO 'test'@'localhost' IDENTIFIED BY 'test' WITH G
 create table machine(
 id int(4) not null primary key auto_increment,
 ip varchar(15) default null,
-sm varchar(20) default null,
+sn varchar(20) default null,
 cpu varchar(2) default '0',
 mem varchar(3) default '0',
 eth0 varchar(17) default null,
@@ -50,37 +50,46 @@ def server():
         client.close()
         #处理msg
         target_ip = msg['ip']
+        target_sn = msg['sn']
         kk=''
         vv=''
         for k,v in msg.items():
             kk += k + ','
             vv += "'" + v + "',"
-        #判断数据库中是否存在记录
-        cmd = "select 1 from machine where ip='%s';" %target_ip
+        #判断数据库中是否存在这个SN号对应的服务器信息
+        cmd = "select 1 from machine where sn='%s';" %(target_sn)
         rc,output = mysql('test','test','test').get_response(cmd)
         if rc==True:
+            num = len(output)
             #如果不存在，插入数据
-            if len(output)==0:
+            if num == 0:
                 cmd = "insert into machine (%smodify_time) values (%sNow())" %(kk,vv)
                 rc,out = mysql('test','test','test').get_response(cmd)
                 if rc==True:
-                    print "Info: %s Machine Added." %target_ip
+                    print "Info: SN: %s, Machine Added." %(target_sn)
+                    num += 1
             #如果存在，先清除（保留ip），再Update
-            elif len(output)==1:
-                cmd = "update machine set sm=null,cpu='0',mem='0',eth0=null,eth1=null,modify_time=Now() where ip='%s';" %target_ip
+            elif num == 1:
+                cmd = "update machine set ip=null,cpu='0',mem='0',eth0=null,eth1=null,modify_time=Now() where sn='%s';" %(target_sn)
                 rc,out = mysql('test','test','test').get_response(cmd)
                 if rc==True:
-                    print "Info: %s Data Delete." %target_ip
+                    print "Info: SN: %s, Data Delete." %(target_sn)
                 l='update machine set '
                 for k,v in msg.items():
-                    if k == 'ip':
+                    if k == 'sn':
                         continue
                     s = "%s='%s'," %(k,v)
                     l += s
-                cmd = l[:-1] + " where ip='%s';" %target_ip
+                cmd = l[:-1] + " where sn='%s';" %(target_sn)
                 rc,out = mysql('test','test','test').get_response(cmd)
                 if rc==True:
-                    print "Info: %s Update Successfully." %(target_ip)
+                    print "Info: SN: %s, Update Successfully." %(target_sn)
+            #如果查到信息大于1条
+            else:
+                print "Info: SN: %s Linked to More Than 1 Machine, Please Check it, Do Noting." %(target_sn)
+        #如果数据库查询失败
+        else:
+            print "Info: Something Wrong With the Database, Do Nothing."
 if __name__ == '__main__':
     SERVER = "192.168.8.221"
     PORT = 12306
@@ -126,7 +135,7 @@ def run_command(cmd):
 def getMachineInfo():
     #服务器的序列号
     cmd = "dmidecode -t system |grep 'Serial Number' | awk '{print $3}'"
-    sm = run_command(cmd)
+    sn = run_command(cmd)
     #eth0的ip地址
     cmd = "ifconfig eth0 | grep 'inet addr' | awk -F ':' '{print $2}' | awk '{print $1}'"
     ip = run_command(cmd)
@@ -149,7 +158,7 @@ def getMachineInfo():
         mac = n.split('"')[1]
         dev = n.split('"')[3]
         nic += dev + '=' + mac + '###'
-    m = 'sm=%s###ip=%s###cpu=%s###mem=%s###%s' %(sm,ip,cpu,mem,nic)
+    m = 'sn=%s###ip=%s###cpu=%s###mem=%s###%s' %(sn,ip,cpu,mem,nic)
     msg = m[:-3]         #需要被post的字符串
     return msg
 if __name__ == '__main__':
@@ -169,11 +178,11 @@ get
 
 @server
 [root@192_168_8_221 ~]#  python server.py 
-accept ('192.168.8.212', 33090) connect         #1
-Info: 192.168.8.212 Machine Added.
-accept ('192.168.8.212', 33106) connect         #2
-Info: 192.168.8.212 Data Delete.
-Info: 192.168.8.212 Update Successfully.
+accept ('192.168.8.212', 38150) connect         #1
+Info: SN: 4CV314DHRN, Machine Added.
+accept ('192.168.8.212', 38158) connect         #2
+Info: SN: 4CV314DHRN, Data Delete.
+Info: SN: 4CV314DHRN, Update Successfully.
 
 @mysql
 mysql> select * from machine;                   #1
