@@ -8,6 +8,7 @@ client_ip: 192.168.212
 create database test;
 #授权
 GRANT ALL PRIVILEGES ON test.* TO 'test'@'localhost' IDENTIFIED BY 'test' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
 #创建表
 create table machine(
 id int(4) not null primary key auto_increment,
