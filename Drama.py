@@ -1,6 +1,6 @@
 #!D:\Python27\python.exe
 # -*- coding: utf-8 -*-
-#目前支持iqiyi和pps
+#目前支持iqiyi和pps,其中一些js生成的domain信息无法抓取
 
 import time
 import sys
@@ -113,6 +113,6 @@ def getdrama(b, key):
 if __name__ == "__main__":
     dramas = [{'id':1,'region':'iqiyi','name':'来自星星的你','turl':'http://www.iqiyi.com/a_19rrgja8xd.html'},
               {'id':2,'region':'iqiyi','name':'识骨寻踪（第九季）','turl':'http://www.iqiyi.com/a_19rrifsvfq.html'},
-              {'id':3,'region':'pps','name':'诈欺猎人','turl':'http://v.pps.tv/splay_137983.html'}
+              {'id':3,'region':'pps','name':'诈欺猎人','turl':'http://v.pps.tv/splay_137983.html'},
     ]
     Drama(dramas).run()
