@@ -152,7 +152,7 @@ def getMachineInfo():
         memi += int(me)/1024
     mem = str(memi)
     #网卡device name和对应的mac地址
-    cmd = "cat /etc/udev/rules.d/70-persistent-net.rules | grep 'SUBSYSTEM' | grep 'net' | awk '{print mac=$4,$7}'"
+    cmd = "cat /etc/udev/rules.d/70-persistent-net.rules | grep 'SUBSYSTEM' | grep 'net' | awk '{print $4,$7}'"
     nics = run_command(cmd)
     nic = ''
     for n in nics.split('\n'):
