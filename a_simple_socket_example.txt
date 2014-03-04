@@ -68,7 +68,7 @@ def server():
                 rc,out = mysql('test','test','test').get_response(cmd)
                 if rc==True:
                     print "Info: SN: %s, Machine Added." %(target_sn)
-                    num += 1
+                    #num += 1
             #如果存在，先清除（保留ip），再Update
             elif num == 1:
                 cmd = "update machine set ip=null,cpu='0',mem='0',eth0=null,eth1=null,modify_time=Now() where sn='%s';" %(target_sn)
