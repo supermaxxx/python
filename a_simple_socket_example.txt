@@ -1,6 +1,6 @@
 server_ip: 192.168.8.221  socket_port: 12306
-mysql_ip: 192.168.221
-client_ip: 192.168.212
+mysql_ip:  192.168.8.221
+client_ip: 192.168.8.212
 
 
 1> 数据库
