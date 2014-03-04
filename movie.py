@@ -18,7 +18,7 @@ class DramaItem:
     def openDrama(self):
         os.startfile(self.url)
 
-class Iqiyi(object):
+class Drama(object):
     def __init__(self,dramas):
         self.dramas = dramas
     def getItem_iqiyi(self, xxx):
@@ -115,4 +115,4 @@ if __name__ == "__main__":
               {'id':2,'region':'iqiyi','name':'识骨寻踪（第九季）','turl':'http://www.iqiyi.com/a_19rrifsvfq.html'},
               {'id':3,'region':'pps','name':'诈欺猎人','turl':'http://v.pps.tv/splay_137983.html'},
     ]
-    Iqiyi(dramas).run()
+    Drama(dramas).run()
