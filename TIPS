@@ -95,7 +95,6 @@ stop(){
   pid=`ps -ef|grep server.py|grep -v grep|awk '{print $2}'`
   kill -9 $pid
 }
-
 case "$1" in
   start)
     start
