@@ -85,4 +85,27 @@ cat /etc/passwd|awk -F ":" -v var=$user '{if($1==var) {print "user:"$1"  uid:"$3
 #cat /etc/passwd|awk -F ":" -v var=$user '{if($1==var) {print "user:"$1"  uid:"$3"  home:"$6""; exit;} else {print ""$1" is not matched."}}'
 
 
-7> 
+7> 简易init脚本
+# cat s.sh
+start(){
+  clear
+  python server.py &
+}
+stop(){
+  pid=`ps -ef|grep server.py|grep -v grep|awk '{print $2}'`
+  kill -9 $pid
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  *)
+    echo $"Usage: $0 {start|stop}"
+    exit 2
+esac
+
+8> 
