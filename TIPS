@@ -114,8 +114,8 @@ exec 5<list.txt
 while read line <&5
 do
         ip=$line
-        ssh $ip "echo vmcount: `virsh list|grep running|grep -oE '[0-9a-z]{8}\-[0-9a-z]{4}\-[0-9a-z]{4}\-[0-9a-z]{4}\-[0-9a-z]{12}' | wc -l`"
-        ssh $ip "echo `free -m|grep Mem|awk '{printf "Memory usage: %.2lf%\n",$3/$2*100}'`"
+        ssh $ip virsh list|grep running|grep -oE '[0-9a-z]{8}\-[0-9a-z]{4}\-[0-9a-z]{4}\-[0-9a-z]{4}\-[0-9a-z]{12}' | wc -l
+        ssh $ip free -m|grep Mem|awk '{printf "Memory usage: %.2lf%\n",$3/$2*100}'
 done
 
 # cat list.txt
