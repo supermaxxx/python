@@ -118,7 +118,7 @@ do
         ssh $ip "echo `free -m|grep Mem|awk '{printf "Memory usage: %.2lf%\n",$3/$2*100}'`"
 done
 
-cat list.txt
+# cat list.txt
 172.16.26.101
 172.16.26.102
 172.16.26.103
