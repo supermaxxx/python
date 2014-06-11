@@ -107,4 +107,19 @@ case "$1" in
     exit 2
 esac
 
-8> 
+8> shell批量操作脚本
+# cat execute.sh
+#!/bin/bash
+exec 5<list.txt
+while read line <&5
+do
+        ip=$line
+        ssh $ip "echo vmcount: `virsh list|grep running|grep -oE '[0-9a-z]{8}\-[0-9a-z]{4}\-[0-9a-z]{4}\-[0-9a-z]{4}\-[0-9a-z]{12}' | wc -l`"
+        ssh $ip "echo `free -m|grep Mem|awk '{printf "Memory usage: %.2lf%\n",$3/$2*100}'`"
+done
+
+cat list.txt
+172.16.26.101
+172.16.26.102
+172.16.26.103
+
