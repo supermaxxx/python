@@ -85,7 +85,7 @@ cat /etc/passwd|awk -F ":" -v var=$user '{if($1==var) {print "user:"$1"  uid:"$3
 #cat /etc/passwd|awk -F ":" -v var=$user '{if($1==var) {print "user:"$1"  uid:"$3"  home:"$6""; exit;} else {print ""$1" is not matched."}}'
 
 
-7> 简易init脚本
+7> [Shell] 简易init脚本
 # cat s.sh
 start(){
   clear
@@ -107,7 +107,7 @@ case "$1" in
     exit 2
 esac
 
-8> shell批量操作脚本
+8> [Shell] 批量操作脚本
 # cat execute.sh
 #!/bin/bash
 exec 5<list.txt
@@ -123,3 +123,4 @@ cat list.txt
 172.16.26.102
 172.16.26.103
 
+9>
