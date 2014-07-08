@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import telnetlib
 
 Host = '173.20.11.254'
