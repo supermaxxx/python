@@ -79,3 +79,23 @@ for i in range(n):
     line = 'insert into wang_ip_resource (ip, mac, zone_id, operator_id, state) values (' + "'" + listIP[i] + "','" + listMAC[i] + "',"+ '1, 0, 0);\n'
     msg+=line
 writelogfile(file).log(msg)
+
+'''
+[root@10-9-12-126 wang]# python r.py 100         
+Target is 100, get 100. Successfully!
+result is in the file 10.100_ip.sql(100 lines).
+[root@10-9-12-126 wang]# cat 10.100_ip.sql |wc -l
+100
+
+[root@10-9-12-126 wang]# python r.py 1000
+Target is 1000, get 1000. Successfully!
+result is in the file 10.100_ip.sql(1000 lines).
+[root@10-9-12-126 wang]# cat 10.100_ip.sql |wc -l
+1000
+
+[root@10-9-12-126 wang]# python r.py 25000       
+Target is 25000, but get 24306. If you want target, please have another try as: ./radom_ip_mac.py 25000
+result is in the file 10.100_ip.sql(24306 lines).
+[root@10-9-12-126 wang]# cat 10.100_ip.sql |wc -l
+24306
+'''
