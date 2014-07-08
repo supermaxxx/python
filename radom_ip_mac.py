@@ -3,7 +3,7 @@
 """
 Created on Thur Nov 7 14:00 2013
 @author: wangyucheng
-@Useage: python random_ip_mac.py 6000
+@Useage: python random_ip_mac.py 6000      #(1 - 26400)
 """
 
 import random
