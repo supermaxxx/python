@@ -9,8 +9,8 @@ Created on Thur Nov 7 14:00 2013
 import random
 import os
 import sys
-from mylib.common_lib import mysql
-from mylib.common_lib import writelogfile
+from python_lib.common_lib import mysql
+from python_lib.common_lib import writelogfile
 
 file = '10.100_ip.sql'
 if os.path.exists(file):
@@ -114,4 +114,5 @@ insert into wang_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.
 insert into wang_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.14.140','52:54:00:75:23:AD',1, 0, 0);
 insert into wang_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.121.198','52:54:00:2F:78:A4',1, 0, 0);
 ...
+
 '''
