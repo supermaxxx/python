@@ -98,4 +98,7 @@ Target is 25000, but get 24306. If you want target, please have another try as: 
 result is in the file 10.100_ip.sql(24306 lines).
 [root@10-9-12-126 wang]# cat 10.100_ip.sql |wc -l
 24306
+
+[root@10-9-12-126 wang]# python r.py 26401
+too many, please use 1-26400
 '''
