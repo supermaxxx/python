@@ -3,13 +3,18 @@
 """
 Created on Thur Nov 7 14:00 2013
 @author: wangyucheng
-@Useage: python random_ip_mac.py 6000      #(1 - 26400)
+@Useage: python random_ip_mac.py 6000    #1-26400
 """
 
 import random
+import os
 import sys
 from mylib.common_lib import mysql
 from mylib.common_lib import writelogfile
+
+file = '10.100_ip.sql'
+if os.path.exists(file):
+    os.system("rm -f %s" %file)
 
 def randomMAC():
     mac = [ 0x52, 0x54, 0x00,
@@ -33,7 +38,7 @@ n = int(sys.argv[1])
 n_try = int(n * 1.5)
 
 if n_try > 39600:
-    print "too many"
+    print "too many, please use 1-26400"
     sys.exit(0)
 
 for i in range(1,n_try+1):
@@ -62,12 +67,15 @@ if len_test > n:
     cha = n - len_test
     del listIP[cha:]
     del listMAC[cha:]
+    print "Target is %s, get %s. Successfully!\nresult is in the file %s(%s lines)." %(n,n,file,n)
 elif len_test < n:
-    print "please try again."
-    sys.exit(0)
+    cha = len_test -n
+    n_old = n
+    n = len_test
+    print "Target is %s, but get %s. If you want target, please have another try as: ./radom_ip_mac.py %s\nresult is in the file %s(%s lines)." %(n_old,n,n_old,file,n)
 
 msg = ''
 for i in range(n):
     line = 'insert into wang_ip_resource (ip, mac, zone_id, operator_id, state) values (' + "'" + listIP[i] + "','" + listMAC[i] + "',"+ '1, 0, 0);\n'
     msg+=line
-writelogfile('10.100_ip.sql').log(msg)
+writelogfile(file).log(msg)
