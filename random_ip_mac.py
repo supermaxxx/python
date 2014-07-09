@@ -80,7 +80,9 @@ for i in range(n):
     msg+=line
 writelogfile(file).log(msg)
 
+
 '''
+result:
 [root@10-9-12-126 wang]# python radom_ip_mac.py 100         
 Target is 100, get 100. Successfully!
 result is in the file 10.100_ip.sql(100 lines).
