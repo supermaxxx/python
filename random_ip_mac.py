@@ -76,7 +76,7 @@ elif len_test < n:
 
 msg = ''
 for i in range(n):
-    line = 'insert into wang_ip_resource (ip, mac, zone_id, operator_id, state) values (' + "'" + listIP[i] + "','" + listMAC[i] + "',"+ '1, 0, 0);\n'
+    line = 'insert into t_ip_resource (ip, mac, zone_id, operator_id, state) values (' + "'" + listIP[i] + "','" + listMAC[i] + "',"+ '1, 0, 0);\n'
     msg+=line
 writelogfile(file).log(msg)
 
@@ -105,16 +105,16 @@ result is in the file 10.100_ip.sql(24306 lines).
 too many, please use 1-26400
 
 [root@10-9-12-126 wang]# cat 10.100_ip.sql 
-insert into wang_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.45.37','52:54:00:55:B8:CE',1, 0, 0);
-insert into wang_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.1.4','52:54:00:76:18:3A',1, 0, 0);
-insert into wang_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.58.107','52:54:00:1B:0F:EA',1, 0, 0);
-insert into wang_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.150.183','52:54:00:5B:31:6B',1, 0, 0);
-insert into wang_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.165.115','52:54:00:61:C0:88',1, 0, 0);
-insert into wang_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.81.123','52:54:00:09:0A:32',1, 0, 0);
-insert into wang_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.46.195','52:54:00:50:59:3C',1, 0, 0);
-insert into wang_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.55.53','52:54:00:28:05:AF',1, 0, 0);
-insert into wang_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.14.140','52:54:00:75:23:AD',1, 0, 0);
-insert into wang_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.121.198','52:54:00:2F:78:A4',1, 0, 0);
+insert into t_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.45.37','52:54:00:55:B8:CE',1, 0, 0);
+insert into t_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.1.4','52:54:00:76:18:3A',1, 0, 0);
+insert into t_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.58.107','52:54:00:1B:0F:EA',1, 0, 0);
+insert into t_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.150.183','52:54:00:5B:31:6B',1, 0, 0);
+insert into t_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.165.115','52:54:00:61:C0:88',1, 0, 0);
+insert into t_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.81.123','52:54:00:09:0A:32',1, 0, 0);
+insert into t_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.46.195','52:54:00:50:59:3C',1, 0, 0);
+insert into t_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.55.53','52:54:00:28:05:AF',1, 0, 0);
+insert into t_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.14.140','52:54:00:75:23:AD',1, 0, 0);
+insert into t_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.121.198','52:54:00:2F:78:A4',1, 0, 0);
 ...
 
 """
