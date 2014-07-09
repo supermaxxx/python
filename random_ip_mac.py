@@ -72,7 +72,7 @@ elif len_test < n:
     cha = len_test -n
     n_old = n
     n = len_test
-    print "Target is %s, but get %s. If you want target, please have another try as: python radom_ip_mac.py %s\nresult is in the file %s(%s lines)." %(n_old,n,n_old,file,n)
+    print "Target is %s, but get %s. If you want target, please have another try as: python random_ip_mac.py %s\nresult is in the file %s(%s lines)." %(n_old,n,n_old,file,n)
 
 msg = ''
 for i in range(n):
@@ -83,20 +83,20 @@ writelogfile(file).log(msg)
 
 '''
 result:
-[root@10-9-12-126 wang]# python radom_ip_mac.py 100         
+[root@10-9-12-126 wang]# python random_ip_mac.py 100         
 Target is 100, get 100. Successfully!
 result is in the file 10.100_ip.sql(100 lines).
 [root@10-9-12-126 wang]# cat 10.100_ip.sql |wc -l
 100
 
-[root@10-9-12-126 wang]# python radom_ip_mac.py 1000
+[root@10-9-12-126 wang]# python random_ip_mac.py 1000
 Target is 1000, get 1000. Successfully!
 result is in the file 10.100_ip.sql(1000 lines).
 [root@10-9-12-126 wang]# cat 10.100_ip.sql |wc -l
 1000
 
-[root@10-9-12-126 wang]# python radom_ip_mac.py 25000       
-Target is 25000, but get 24306. If you want target, please have another try as: python radom_ip_mac.py 25000
+[root@10-9-12-126 wang]# python random_ip_mac.py 25000       
+Target is 25000, but get 24306. If you want target, please have another try as: python random_ip_mac.py 25000
 result is in the file 10.100_ip.sql(24306 lines).
 [root@10-9-12-126 wang]# cat 10.100_ip.sql |wc -l
 24306
