@@ -81,7 +81,7 @@ for i in range(n):
 writelogfile(file).log(msg)
 
 
-'''
+"""
 result:
 [root@10-9-12-126 wang]# python random_ip_mac.py 100         
 Target is 100, get 100. Successfully!
@@ -117,4 +117,4 @@ insert into wang_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.
 insert into wang_ip_resource (ip, mac, zone_id, operator_id, state) values ('10.100.121.198','52:54:00:2F:78:A4',1, 0, 0);
 ...
 
-'''
+"""
