@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+
 '''
 Created on Thursday Sep 4 16:00 2014
 @author: wangyucheng
@@ -7,9 +8,10 @@ Created on Thursday Sep 4 16:00 2014
 
 import sys, os
 import commands
-import re, time
+import re
+import logging
 import urllib
-from datetime import datetime
+from datetime import datetime, date
 from bs4 import BeautifulSoup
 import smtplib
 from email.MIMEText import MIMEText
@@ -27,10 +29,10 @@ class Writer():
 
 class Email(object):
     def __init__(self, MAIL_SUBJECT, MAIL_MESSAGE, ATTACHMENT=None):
-        self.MAIL_HOST = 'smtp.163.com'  #维护
-        self.MAIL_USERNAME = '******@163.com'  #维护
-        self.MAIL_PASSWORD = '******'  #维护
-        self.MAIL_TO = '******@qq.com'  #维护
+        self.MAIL_HOST = 'smtp.163.com'
+        self.MAIL_USERNAME = '******@163.com'
+        self.MAIL_PASSWORD = '******'
+        self.MAIL_TO = '******@qq.com'
         self.MAIL_SUBJECT = MAIL_SUBJECT  # title of the mail
         self.MAIL_MESSAGE = MAIL_MESSAGE  # body of the mail
         self.ATTACHMENT = ATTACHMENT  # attachment
@@ -52,9 +54,12 @@ class Email(object):
             session.login(self.MAIL_USERNAME,self.MAIL_PASSWORD)
             session.sendmail(self.MAIL_USERNAME,self.MAIL_TO,msg.as_string())
             session.close()
-            print 'Send Email Successfully.'
+            msg = 'Send Email Successfully.'
+            print msg
+            logger.info(msg)
         except Exception,e:
             print e
+            logger.info(e)
 
 
 def  task_begin(name):
@@ -62,6 +67,7 @@ def  task_begin(name):
     begin_time = _begin_time.strftime("%Y-%m-%d %H:%M:%S")
     msg = "Downloading %s...BEGIN -- Current Time: %s" %(name, begin_time)
     print msg
+    logger.info(msg)
     return _begin_time
 
 
@@ -71,14 +77,16 @@ def task_end(name, _begin_time):
     cost = (_end_time - _begin_time).seconds
     msg = "Downloading %s...END   -- Current Time: %s" %(name, end_time)
     print msg
+    logger.info(msg)
     msg = "Downloading %s...Suc, Time Cost: %ss." %(name, cost)
     print msg
+    logger.info(msg)
 
 
 class Magazine():
     def __init__(self, name):
         self.name = name
-        self.main_url = 'http://www.vvshu.com/view/%s/' %self.name
+        self.main_url = 'http://www.vvshu.com/view/%s/' %self.name  #http://www.madouer.com/ => need to do
     def CheckLocal(self, day, d):
         work_dir = '%s/%s/%s_%s/' %(main_dir, day, self.name, d)
         if os.path.exists(work_dir) == False:
@@ -195,7 +203,9 @@ class Magazine():
                         for j in range(len(_tmp)-1):
                             _tmp_img_url += _tmp[j] + '/'
                         img_url = _tmp_img_url.replace('"','')
-                        print '[' + str(k+1) + '] Pages: ' + str(page) + ' [' + text + ']'
+                        msg = '[' + str(k+1) + '] Pages: ' + str(page) + ' [' + text + ']'
+                        print msg
+                        logger.info(msg)
                         for i in range(1, page + 1):
                             _i = '%03d' %i
                             _img = _i + '.jpg'
@@ -212,7 +222,8 @@ class Magazine():
                                         rc, out = commands.getstatusoutput(cmd)
                             stdout_pre = sys.stdout
                             sys.stdout = Writer(htmfile)
-                            print '<a href="%s" target=_blank><img border=0 src="%s"  onmousewheel="return zoompic(this);"></a><br><br>' %(_img, _img)
+                            print '<a href="%s" target=_blank><img border=0 src="%s"  onmousewheel="return zoompic(this);"></a><br><br>' %(_i
+mg, _img)
                             #print '<a target=_blank href="%s">%s</a>,978*1300<br>' %(_img, _img)
                             sys.stdout = stdout_pre
                         cmd = 'ls %s | sed "s:^:%s/:"' %(work_dir[:-1], work_dir[:-1])
@@ -264,7 +275,22 @@ def fenbao(file_count, tar_count):
             last_1_end += every_packge
     return li
 
-	
+
+class mylogger(object):
+   def __init__(self,filename):
+       self.filename = filename
+   def initlog(self):
+       logging.basicConfig(filename=self.filename,level = logging.INFO, format = '%(asctime)s - %(levelname)s: %(message)s')
+       logger = logging.getLogger()
+       return logger
+
+
 if __name__ == '__main__':
-    main_dir = '/tmp'
-    [Magazine(t).run() for t in ['minacn', 'raycn', 'vivi', 'mina', 'nonno', 'ray', '25ans', 'cancam']]  #and so on...
+    main_dir = '/tmp/vvshu'
+    log_dir = main_dir + '/logs'
+    if os.path.exists(log_dir) == False:
+        os.system("mkdir -p %s" %log_dir)
+    today = str(date.today())
+    logger = mylogger("%s/vvshu-%s.log" %(log_dir, today)).initlog()
+    logger.info("Start!!!")
+    [Magazine(t).run() for t in ['minacn', 'raycn', 'vivi', 'mina', 'nonno', 'ray', '25ans', 'cancam']]
