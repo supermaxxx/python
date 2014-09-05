@@ -176,87 +176,85 @@ class Magazine():
         sys.stdout = stdout_pre
     def run(self):
         baseurl = self.CheckRemote()
-        if baseurl != None:
-            if len(baseurl) != 0:
-                _begin_time = task_begin(self.name)
-                for k in range(len(baseurl)):
-                    url, text = baseurl[k]
-                    day = url.split('/')[-2]
-                    work_dir = self.CheckLocal(day, k+1)
-                    if work_dir != None:
-                        htmfile = '%s/view.htm' %work_dir
-                        cmd = 'rm -f %s' %htmfile
-                        os.system(cmd)
-                        self.add_head(htmfile)
-                        response = urllib.urlopen(url)
-                        html = response.read()
-                        out = html.split()
-                        out_len = len(out)
-                        p = re.compile(r'[0-9]{4}.*?\.jpg"$')
-                        for i in range(0,out_len):
-                            if out[i] == 'page':
-                                page = int(out[i+2][:-1])
-                        for i in out:
-                            if p.match(i):
-                                _tmp = i.split('=')[1].split('/')
-                                _tmp_img_url = ''
-                        for j in range(len(_tmp)-1):
-                            _tmp_img_url += _tmp[j] + '/'
-                        img_url = _tmp_img_url.replace('"','')
-                        msg = '[' + str(k+1) + '] Pages: ' + str(page) + ' [' + text + ']'
-                        print msg
-                        logger.info(msg)
-                        for i in range(1, page + 1):
-                            _i = '%03d' %i
-                            _img = _i + '.jpg'
-                            img = img_url + _img
-                            #weburl = url + '?' + _i
-                            if os.path.exists('%s/%s' %(work_dir, _img)) == False:
-                                cmd = 'wget -P %s %s' %(work_dir, img)
-                                #os.system(cmd)
+        if baseurl and len(baseurl) > 0: 
+            _begin_time = task_begin(self.name)
+            for k in range(len(baseurl)):
+                url, text = baseurl[k]
+                day = url.split('/')[-2]
+                work_dir = self.CheckLocal(day, k+1)
+                if work_dir != None:
+                    htmfile = '%s/view.htm' %work_dir
+                    cmd = 'rm -f %s' %htmfile
+                    os.system(cmd)
+                    self.add_head(htmfile)
+                    response = urllib.urlopen(url)
+                    html = response.read()
+                    out = html.split()
+                    out_len = len(out)
+                    p = re.compile(r'[0-9]{4}.*?\.jpg"$')
+                    for i in range(0,out_len):
+                        if out[i] == 'page':
+                            page = int(out[i+2][:-1])
+                    for i in out:
+                        if p.match(i):
+                            _tmp = i.split('=')[1].split('/')
+                            _tmp_img_url = ''
+                    for j in range(len(_tmp)-1):
+                        _tmp_img_url += _tmp[j] + '/'
+                    img_url = _tmp_img_url.replace('"','')
+                    msg = '[' + str(k+1) + '] Pages: ' + str(page) + ' [' + text + ']'
+                    print msg
+                    logger.info(msg)
+                    for i in range(1, page + 1):
+                        _i = '%03d' %i
+                        _img = _i + '.jpg'
+                        img = img_url + _img
+                        #weburl = url + '?' + _i
+                        if os.path.exists('%s/%s' %(work_dir, _img)) == False:
+                            cmd = 'wget -P %s %s' %(work_dir, img)
+                            #os.system(cmd)
+                            rc, out = commands.getstatusoutput(cmd)
+                            #rc = 0
+                            if rc != 0:
                                 rc, out = commands.getstatusoutput(cmd)
-                                #rc = 0
                                 if rc != 0:
                                     rc, out = commands.getstatusoutput(cmd)
-                                    if rc != 0:
-                                        rc, out = commands.getstatusoutput(cmd)
-                            stdout_pre = sys.stdout
-                            sys.stdout = Writer(htmfile)
-                            print '<a href="%s" target=_blank><img border=0 src="%s"  onmousewheel="return zoompic(this);"></a><br><br>' %(_i
-mg, _img)
-                            #print '<a target=_blank href="%s">%s</a>,978*1300<br>' %(_img, _img)
-                            sys.stdout = stdout_pre
-                        cmd = 'ls %s | sed "s:^:%s/:"' %(work_dir[:-1], work_dir[:-1])
-                        rc, out = commands.getstatusoutput(cmd)
-                        if out != None:
-                            file_count = int(len(out.split()))
-                            file_list = out.split()
-                        cmd = 'du %s' %work_dir
-                        rc, out = commands.getstatusoutput(cmd)
-                        if out != None:
-                            sum = int(out.split()[0])
-                        tar_count = (sum//(55*1024))+ 1
-                        fb = fenbao(file_count, tar_count)
-                        for i in range(0,len(fb)):
-                            file_list_begin = fb[i][0]
-                            file_list_end = fb[i][1]
-                            files = file_list[file_list_begin-1:file_list_end]
-                            fb_file_list = ''
-                            for j in files:
-                                fb_file_list += ' ' + j
-                            _attr_path = '%s_%s.tar.gz' %(work_dir[:-1], str(i+1))
-                            attr_path = ''.join(chr(ord(x)) for x in _attr_path)
-                            if len(fb) == 1:
-                                title = text + ' all'
-                            else:
-                                title = text + ' part ' + str(i+1) + ' of ' + str(len(fb))
-                            if os.path.exists(attr_path)  == False:
-                                cmd = 'cd %s && tar zcf %s %s' %(main_dir, attr_path, fb_file_list)
-                                rc, out = commands.getstatusoutput(cmd)
-                                if rc == 0:
-                                    Email(title, '', attr_path).run()
-                            #Email(title, '', attr_path).run() #test
-                task_end(self.name, _begin_time)
+                        stdout_pre = sys.stdout
+                        sys.stdout = Writer(htmfile)
+                        print '<a href="%s" target=_blank><img border=0 src="%s"  onmousewheel="return zoompic(this);"></a><br><br>' %(_img, _img)
+                        #print '<a target=_blank href="%s">%s</a>,978*1300<br>' %(_img, _img)
+                        sys.stdout = stdout_pre
+                    cmd = 'ls %s | sed "s:^:%s/:"' %(work_dir[:-1], work_dir[:-1])
+                    rc, out = commands.getstatusoutput(cmd)
+                    if out != None:
+                        file_count = int(len(out.split()))
+                        file_list = out.split()
+                    cmd = 'du %s' %work_dir
+                    rc, out = commands.getstatusoutput(cmd)
+                    if out != None:
+                        sum = int(out.split()[0])
+                    tar_count = (sum//(55*1024))+ 1
+                    fb = fenbao(file_count, tar_count)
+                    for i in range(0,len(fb)):
+                        file_list_begin = fb[i][0]
+                        file_list_end = fb[i][1]
+                        files = file_list[file_list_begin-1:file_list_end]
+                        fb_file_list = ''
+                        for j in files:
+                            fb_file_list += ' ' + j
+                        _attr_path = '%s_%s.tar.gz' %(work_dir[:-1], str(i+1))
+                        attr_path = ''.join(chr(ord(x)) for x in _attr_path)
+                        if len(fb) == 1:
+                            title = text + ' all'
+                        else:
+                            title = text + ' part ' + str(i+1) + ' of ' + str(len(fb))
+                        if os.path.exists(attr_path)  == False:
+                            cmd = 'cd %s && tar zcf %s %s' %(main_dir, attr_path, fb_file_list)
+                            rc, out = commands.getstatusoutput(cmd)
+                            if rc == 0:
+                                Email(title, '', attr_path).run()
+                        #Email(title, '', attr_path).run() #test
+            task_end(self.name, _begin_time)
 
 
 def fenbao(file_count, tar_count):
