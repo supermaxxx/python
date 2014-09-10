@@ -447,7 +447,7 @@ if __name__ == '__main__':
     if os.path.exists(log_dir) == False:
         os.system("mkdir -p %s" %log_dir)
     today = str(date.today())
-    logger = mylogger("%s/vvshu-%s.log" %(log_dir, today)).initlog()
+    logger = mylogger("%s/magazine-%s.log" %(log_dir, today)).initlog()
     logger.info("Start!!!")
 
     index = { 'spring':'/snjt/spring/',
