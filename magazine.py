@@ -233,10 +233,17 @@ def vvshu_run(LIST):
         for i in range(len(h)):
             _name =  h[i][0] + '_' + str(i+1)
             (url, month, text) = h[i][1]
-            #print _name, url, month, text
             _begin_time = task_begin(_name)
             day = url.split('/')[-2]
             work_dir = CheckLocal(_name, day)
+            cmd = 'find %s -name "%s*"' %(main_dir, _name)
+            rc, _result = commands.getstatusoutput(cmd)
+            if _result and len(_result) > 0:
+                result = _result.split()
+                for q in result:
+                    if q.split('/')[3] != day:
+                        cmd = 'rm -rf %s' %q
+                        os.system(cmd)
             if work_dir != None:
                 htmfile = '%sview.htm' %work_dir
                 cmd = 'rm -f %s' %htmfile
@@ -318,12 +325,19 @@ def madouer_run(LIST):
     base_img_url = 'http://img1.zazhimi.net/aazzmpic/'
     for h in LIST:
         for i in range(len(h)):
-            _name =  h[i][0] + '_' + str(i+1)
+            _name = h[i][0] + '_' + str(i+1)
             (url, month, text) = h[i][1]
-            #print _name, url, month, text
             _begin_time = task_begin(_name)
             day = url.split('/')[5] + url.split('/')[6][:2]
             work_dir = CheckLocal(_name, day)
+            cmd = 'find %s -name "%s*"' %(main_dir, _name)
+            rc, _result = commands.getstatusoutput(cmd)
+            if _result and len(_result) > 0:
+                result = _result.split()
+                for q in result:
+                    if q.split('/')[3] != day:
+                        cmd = 'rm -rf %s' %q
+                        os.system(cmd)
             if work_dir != None:
                 htmfile = '%sview.htm' %work_dir
                 cmd = 'rm -f %s' %htmfile
@@ -339,9 +353,9 @@ def madouer_run(LIST):
                     if (out[j-1], out[j]) == ('var', 'dir'):
                         dir = out[j+2][:-1].split("'")[1]
                 msg = '[' + str(i+1) + '] Pages: ' + str(page) + ' [' + text + ']'
-                img_url = base_img_url + dir
                 print msg
                 logger.info(msg)
+                img_url = base_img_url + dir
                 for m in range(1, page + 1):
                     _m = '%03d' %m
                     _img = _m + '.jpg'
@@ -431,7 +445,6 @@ def rebuild():
                         else:
                             _madouers_1.append(j[0])
 
-							
 class mylogger(object):
    def __init__(self,filename):
        self.filename = filename
@@ -463,9 +476,9 @@ if __name__ == '__main__':
               'nonno':'/snjt/nonno/'
     }
 
-    _vvshus_1 = ['minacn', 'raycn', 'ray', '25ans', 'gisele', 'ginger', 'steady', 'sweet', 'meirenbaihua', 'vivicn']
+    _vvshus_1 =   ['minacn', 'raycn', 'ray', '25ans', 'gisele', 'ginger', 'steady', 'sweet', 'meirenbaihua', 'vivicn']
     _madouers_1 = ['spring', 'jelly', 'with', 'jj', 'faxing', 'biteki']
-    repeat = ['mina', 'nonno', 'vivi', 'cancam', 'more']
+    repeat =      ['mina', 'nonno', 'vivi', 'cancam', 'more']
 
     [vvshu(t).getlist(_vvshu_list_2) for t in repeat] #create _vvshu_list_2
     [madouer(t).getlist(_madouer_list_2) for t in repeat] #create _madouer_list_2
@@ -474,10 +487,10 @@ if __name__ == '__main__':
     [vvshu(t).getlist(_vvshu_list_1) for t in _vvshus_1] #create _vvshu_list_1
     [madouer(t).getlist(_madouer_list_1) for t in _madouers_1] #create _madouer_list_1
 
-    print "#######################################################################"
+    print "#############################"
     print _vvshus_1
     vvshu_run(LIST = _vvshu_list_1)
     
-    print "#######################################################################"
+    print "#############################"
     print _madouers_1
     madouer_run(LIST = _madouer_list_1)
