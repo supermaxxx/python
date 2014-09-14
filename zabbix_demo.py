@@ -48,8 +48,8 @@ class ZabbixApi:
 if __name__ == "__main__":
     api_info = {
             'url': 'http://192.168.200.25/zabbix/api_jsonrpc.php',
-            'user':'admin',
-            'password':'admin'
+            'user':'******',
+            'password':'******'
     }
 
     zapi = ZabbixApi(api_info)
@@ -58,7 +58,7 @@ if __name__ == "__main__":
     tmp = zapi.run("usergroup.getobjects", {"output":"extend", "name":"zabbix administrators"})
     user_groupid_of_admin = tmp['result'][0]['usrgrpid'] if len(tmp['result'])>0 else None  #require to create admin user
 
-    #create an admin user "wangyucheng" if not exist  [require: usergroup_id]
+    #create a admin user "wangyucheng" if not exist  [require: usergroup_id]
     new_user = {"name":"wangyucheng",
                 "alias":"wangyucheng",
                 "passwd":"wangyucheng",
@@ -97,6 +97,9 @@ if __name__ == "__main__":
         print "create template %s successfully." %new_template_name
     tmp = zapi.run("template.getobjects", {"host":new_template_name})
     new_template_id = tmp['result'][0]['templateid'] if len(tmp['result'])>0 else None  #require to create host/item
+    template_os_linux = "Template OS Linux"
+    tmp = zapi.run("template.getobjects", {"host":template_os_linux})
+    template_id_os_linux = tmp['result'][0]['templateid'] if len(tmp['result'])>0 else None
 
     #create any hosts and items  [require:hostgroup_id, template_id]
     new_hosts = {"test2":"192.168.110.2","test8":"192.168.110.8"}
@@ -107,7 +110,8 @@ if __name__ == "__main__":
             zapi.run("host.create", {"host":k, 
                                      "interfaces":[{"type":1,"main":1,"useip":1,"ip":v,"dns": "","port": "10050"}],
                                      "groups":[{"groupid":new_hostgroup_id}],
-                                     "templates":[{"templateid":new_template_id}]
+                                     "templates":[{"templateid":new_template_id},
+                                                  {"templateid":template_id_os_linux}],
                      }                 
             )
             print "create host successfully. (hostname:%s, ip:%s)" %(k,v)
