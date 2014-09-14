@@ -49,7 +49,7 @@ if __name__ == "__main__":
     api_info = {
             'url': 'http://192.168.200.25/zabbix/api_jsonrpc.php',
             'user':'admin',
-            'password':'zabbix'
+            'password':'admin'
     }
 
     zapi = ZabbixApi(api_info)
@@ -64,7 +64,7 @@ if __name__ == "__main__":
                 "passwd":"wangyucheng",
                 "usrgrps":{"usrgrpid":user_groupid_of_admin},
                 "user_medias":[{"mediatypeid":1,
-                                "sendto":"wangyucheng@keytonecloud.com",
+                                "sendto":"wangyucheng@demo.com",
                                 "active":0,
                                 "severity": 63,
                                 "period": "1-7,00:00-24:00"
