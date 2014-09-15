@@ -93,12 +93,15 @@ if __name__ == "__main__":
         print "create hostgroup '%s' successfully." %new_hostgroup_name
     tmp = zapi.run("hostgroup.getobjects", {"name":new_hostgroup_name})
     new_hostgroup_id = tmp['result'][0]['groupid'] if len(tmp['result'])>0 else None  #require to create host/template
+    Templates_hostgroup_name = "Templates"
+    tmp = zapi.run("hostgroup.getobjects", {"name":Templates_hostgroup_name})
+    Templates_hostgroup_id = tmp['result'][0]['groupid'] if len(tmp['result'])>0 else None
 
     #create a template "Template RAID for group Physical Machine"  [require: hostgroup_id]
     new_template_name = "Template RAID for hostgroup Physical Machine"
     tmp = zapi.run("template.exists", {"name":new_template_name})
     if tmp['result'] == False:
-        zapi.run("template.create", {"host":new_template_name, "groups":{"groupid":new_hostgroup_id}})
+        zapi.run("template.create", {"host":new_template_name, "groups":{"groupid":Templates_hostgroup_id}})
         print "create template '%s' successfully." %new_template_name
     tmp = zapi.run("template.getobjects", {"host":new_template_name})
     new_template_id = tmp['result'][0]['templateid'] if len(tmp['result'])>0 else None  #require to create host/item
@@ -183,7 +186,7 @@ if __name__ == "__main__":
                                         "expression":v})
             print "create trigger '%s' successfully." %v
 
-    #create an action
+    #create action
     new_action_name = "raid1"
     tmp = zapi.run("action.exists", {"name":new_action_name})
     if tmp['result'] == False:
