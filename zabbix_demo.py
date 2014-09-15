@@ -231,24 +231,3 @@ if __name__ == "__main__":
                     }
         )
         print "create action '%s' successfully." %new_action_name
-
-"""
-result:
-# python zabbix_demo.py
-create hostgroup 'Physical Machine' successfully.
-create template 'Template RAID for hostgroup Physical Machine' successfully.
-create host successfully. (hostname:os1.office.ketong.com, ip:192.168.200.1)
-create (key:Raid.info) of (template:Template RAID for hostgroup Physical Machine) successfully.
-create (key:Raid.disk.error) of (template:Template RAID for hostgroup Physical Machine) successfully.
-create (key:Raid.Error_Count) of (template:Template RAID for hostgroup Physical Machine) successfully.
-create host successfully. (hostname:test2, ip:192.168.110.2)
-create host successfully. (hostname:test5, ip:192.168.110.5)
-create host successfully. (hostname:test7, ip:192.168.110.7)
-create host successfully. (hostname:test6, ip:192.168.110.6)
-create host successfully. (hostname:test8, ip:192.168.110.8)
-create host successfully. (hostname:os2.office.ketong.com, ip:192.168.200.2)
-create host successfully. (hostname:os3.office.ketong.com, ip:192.168.200.3)
-create trigger '{Template RAID for hostgroup Physical Machine:Raid.disk.error.abschange(0)}#0' successfully.
-create trigger '{Template RAID for hostgroup Physical Machine:Raid.Error_Count.abschange(0)}#0' successfully.
-create action 'raid1' successfully.
-"""
