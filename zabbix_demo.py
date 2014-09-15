@@ -47,7 +47,7 @@ class ZabbixApi:
 
 if __name__ == "__main__":
     api_info = {
-            'url': 'http://192.168.200.25/zabbix/api_jsonrpc.php',
+            'url': 'http://1.1.1.1/zabbix/api_jsonrpc.php',
             'user':'admin',
             'password':'admin'
     }
@@ -74,11 +74,16 @@ if __name__ == "__main__":
     all_users = tmp['result'] if len(tmp['result'])>0 else None
     u = 0
     for user in all_users:
-        if user['alias'] == new_user['name']:
+        if user['name'] == new_user['name']:
             u += 1
     if u == 0:
         zapi.run("user.create", new_user)
         print "create user '%s' successfully." %new_user['name']
+    tmp = zapi.run("user.get", {"output":"extend"})
+    all_users = tmp['result'] if len(tmp['result'])>0 else None
+    for user in all_users:
+        if user['name'] == new_user['name']:
+            new_user_id = user['userid']
 
     #create a hostgroup "Physical Machine" if not exist
     new_hostgroup_name = "Physical Machine"
@@ -103,7 +108,15 @@ if __name__ == "__main__":
     template_id_os_linux = tmp['result'][0]['templateid'] if len(tmp['result'])>0 else None
 
     #create any hosts and items  [require:hostgroup_id, template_id]
-    new_hosts = {"test2":"192.168.110.2","test8":"192.168.110.8"}
+    new_hosts = {"test2":"192.168.110.2",
+                 "test8":"192.168.110.8",
+                 "test5":"192.168.110.5",
+                 "test6":"192.168.110.6",
+                 "test7":"192.168.110.7",
+                 "os1.office.ketong.com":"192.168.200.1",
+                 "os2.office.ketong.com":"192.168.200.2",
+                 "os3.office.ketong.com":"192.168.200.3",
+    }
     for (k, v) in new_hosts.items():
         #create a host
         tmp = zapi.run("host.exists", {"host":k})
@@ -154,11 +167,11 @@ if __name__ == "__main__":
 
     #create any triggers
     triggers= {}
-    trigger_1
+    #trigger_1
     trigger_description = "Raid.disk.error on {HOST.NAME}"
     trigger_expression = "{%s:Raid.disk.error.abschange(0)}#0" %new_template_name
     triggers[trigger_description] = trigger_expression
-    trigger_2
+    #trigger_2
     trigger_description = "Raid.Error_Count on {HOST.NAME}"
     trigger_expression = "{%s:Raid.Error_Count.abschange(0)}#0" %new_template_name
     triggers[trigger_description] = trigger_expression
@@ -169,3 +182,48 @@ if __name__ == "__main__":
             zapi.run("trigger.create", {"description":k,
                                         "expression":v})
             print "create trigger '%s' successfully." %v
+
+    #create action
+    tmp = zapi.run("action.exists", {"name":"raid1"})
+    if tmp['result'] == False:
+        tmp =zapi.run("action.create", {"name":"raid1",
+                                        "eventsource": 0,
+                                        "evaltype": 0,
+                                        "status": 0,
+                                        "esc_period": 60,
+                                        "def_shortdata": "{TRIGGER.NAME}: {TRIGGER.STATUS}",
+                                        "def_longdata": "Trigger: {TRIGGER.NAME}\r\nTrigger status: {TRIGGER.STATUS}\r\nTrigger severity: {TRIGGER.SEVERITY}\r\nTrigger URL: {TRIGGER.URL}\r\n\r\nItem values:\r\n\r\n1. {ITEM.NAME1} ({HOST.NAME1}:{ITEM.KEY1}): {ITEM.VALUE1}\r\n2. {ITEM.NAME2} ({HOST.NAME2}:{ITEM.KEY2}): {ITEM.VALUE2}\r\n3. {ITEM.NAME3} ({HOST.NAME3}:{ITEM.KEY3}): {ITEM.VALUE3}\r\n\r\nOriginal event ID: {EVENT.ID}",
+                                        "conditions":[
+                                            {
+                                            "conditiontype": 13,
+                                            "operator": 0,
+                                            "value": new_template_id
+                                            }
+                                        ],
+                                        "operations":[
+                                            {
+                                            "operationtype": 0,
+                                            "esc_period": 0,
+                                            "esc_step_from": 1,
+                                            "esc_step_to": 2,
+                                            "evaltype": 0,
+                                            "opmessage_grp":[
+                                                {
+                                                "usrgrpid": user_groupid_of_admin
+                                                }
+                                            ],
+                                            "opmessage_usr":[
+                                                {
+                                                "userid": new_user_id
+                                                }
+                                            ],
+                                            "opmessage":
+                                                {
+                                                "default_msg": 1,
+                                                "mediatypeid": 1
+                                                }
+                                            }
+                                        ]
+                    }
+        )
+        print tmp
