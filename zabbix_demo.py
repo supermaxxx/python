@@ -48,8 +48,8 @@ class ZabbixApi:
 if __name__ == "__main__":
     api_info = {
             'url': 'http://192.168.200.25/zabbix/api_jsonrpc.php',
-            'user':'******',
-            'password':'******'
+            'user':'admin',
+            'password':'admin'
     }
 
     zapi = ZabbixApi(api_info)
@@ -78,25 +78,26 @@ if __name__ == "__main__":
             u += 1
     if u == 0:
         zapi.run("user.create", new_user)
-        print "create user %s successfully." %new_user['name']
+        print "create user '%s' successfully." %new_user['name']
 
-    #create a hostgroup "test1" if not exist
-    new_hostgroup_name = "test1"
+    #create a hostgroup "Physical Machine" if not exist
+    new_hostgroup_name = "Physical Machine"
     tmp = zapi.run("hostgroup.exists", {"name":new_hostgroup_name})
     if tmp['result'] == False:
         zapi.run("hostgroup.create", {"name":new_hostgroup_name})
-        print "create hostgroup %s successfully." %new_hostgroup_name
+        print "create hostgroup '%s' successfully." %new_hostgroup_name
     tmp = zapi.run("hostgroup.getobjects", {"name":new_hostgroup_name})
     new_hostgroup_id = tmp['result'][0]['groupid'] if len(tmp['result'])>0 else None  #require to create host/template
 
-    #create a template "Template RAID for group test1"  [require: hostgroup_id]
-    new_template_name = "Template RAID for hostgroup test1"
+    #create a template "Template RAID for group Physical Machine"  [require: hostgroup_id]
+    new_template_name = "Template RAID for hostgroup Physical Machine"
     tmp = zapi.run("template.exists", {"name":new_template_name})
     if tmp['result'] == False:
         zapi.run("template.create", {"host":new_template_name, "groups":{"groupid":new_hostgroup_id}})
-        print "create template %s successfully." %new_template_name
+        print "create template '%s' successfully." %new_template_name
     tmp = zapi.run("template.getobjects", {"host":new_template_name})
     new_template_id = tmp['result'][0]['templateid'] if len(tmp['result'])>0 else None  #require to create host/item
+    #template_os_linux
     template_os_linux = "Template OS Linux"
     tmp = zapi.run("template.getobjects", {"host":template_os_linux})
     template_id_os_linux = tmp['result'][0]['templateid'] if len(tmp['result'])>0 else None
@@ -110,8 +111,9 @@ if __name__ == "__main__":
             zapi.run("host.create", {"host":k, 
                                      "interfaces":[{"type":1,"main":1,"useip":1,"ip":v,"dns": "","port": "10050"}],
                                      "groups":[{"groupid":new_hostgroup_id}],
-                                     "templates":[{"templateid":new_template_id},
-                                                  {"templateid":template_id_os_linux}],
+#                                     "templates":[{"templateid":new_template_id},
+#                                                  {"templateid":template_id_os_linux}],
+                                      "templates":[{"templateid":new_template_id}],
                      }                 
             )
             print "create host successfully. (hostname:%s, ip:%s)" %(k,v)
@@ -128,21 +130,42 @@ if __name__ == "__main__":
             "data_type":0,
             "delay":60
         }
+        #item_1
         new_item['name'] = "Raid.info"
         new_item['key_'] = "Raid.info"
         tmp = zapi.run("item.exists", {"hostid":new_item['hostid'], "key_":new_item['key_']})
         if tmp['result'] == False:
             zapi.run("item.create", new_item)
-            print "create key:%s of template:%s successfully." %(new_item['key_'], new_template_name)
+            print "create (key:%s) of (template:%s) successfully." %(new_item['key_'], new_template_name)
+        #item_2
         new_item['name'] = "Raid.disk.error"
         new_item['key_'] = "Raid.disk.error"
         tmp = zapi.run("item.exists", {"hostid":new_item['hostid'], "key_":new_item['key_']})
         if tmp['result'] == False:
             zapi.run("item.create", new_item)
-            print "create key:%s of template:%s successfully." %(new_item['key_'], new_template_name)
+            print "create (key:%s) of (template:%s) successfully." %(new_item['key_'], new_template_name)
+        #item_3
         new_item['name'] = "Raid.Error_Count"
         new_item['key_'] = "Raid.Error_Count"
         tmp = zapi.run("item.exists", {"hostid":new_item['hostid'], "key_":new_item['key_']})
         if tmp['result'] == False:
             zapi.run("item.create", new_item)
-            print "create key:%s of template:%s successfully." %(new_item['key_'], new_template_name)
+            print "create (key:%s) of (template:%s) successfully." %(new_item['key_'], new_template_name)
+
+    #create any triggers
+    triggers= {}
+    trigger_1
+    trigger_description = "Raid.disk.error on {HOST.NAME}"
+    trigger_expression = "{%s:Raid.disk.error.abschange(0)}#0" %new_template_name
+    triggers[trigger_description] = trigger_expression
+    trigger_2
+    trigger_description = "Raid.Error_Count on {HOST.NAME}"
+    trigger_expression = "{%s:Raid.Error_Count.abschange(0)}#0" %new_template_name
+    triggers[trigger_description] = trigger_expression
+    for (k,v) in triggers.items():
+        tmp = zapi.run("trigger.exists", {"expression": v,
+                                          "hostid": new_template_id})
+        if tmp['result'] == False:
+            zapi.run("trigger.create", {"description":k,
+                                        "expression":v})
+            print "create trigger '%s' successfully." %v
