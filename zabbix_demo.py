@@ -184,9 +184,10 @@ if __name__ == "__main__":
             print "create trigger '%s' successfully." %v
 
     #create action
-    tmp = zapi.run("action.exists", {"name":"raid1"})
+    new_action_name = "raid1"
+    tmp = zapi.run("action.exists", {"name":new_action_name})
     if tmp['result'] == False:
-        tmp =zapi.run("action.create", {"name":"raid1",
+        zapi.run("action.create", {"name":new_action_name,
                                         "eventsource": 0,
                                         "evaltype": 0,
                                         "status": 0,
@@ -226,4 +227,4 @@ if __name__ == "__main__":
                                         ]
                     }
         )
-        print tmp
+        print "create action '%s' successfully." %new_action_name
