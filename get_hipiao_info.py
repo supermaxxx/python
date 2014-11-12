@@ -49,7 +49,7 @@ for day in days:
                     if len(td) > 0:
                         sijian = td[0].text    #放映时间
                         yuyan = td[1].text    #语种/制式
-                        jiage =  td[4].text[1:] + cs('元/') + td[3].text[1:-3] + cs('元')    #会员价/原价
+                        jiage =  td[4].text[1:] + cs('元/') + td[3].text[1:] + cs('元')    #会员价/原价
                         msg += sijian + '    ' + yuyan + ' ' + jiage + '\n'
             msg += '\n'
     m = msg.encode('utf-8')
