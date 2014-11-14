@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
+Download magazines From vvshu & madouer.
 Created on Thursday Sep 10 17:00 2014
 @author: wangyucheng
 '''
