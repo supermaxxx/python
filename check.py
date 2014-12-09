@@ -23,8 +23,8 @@ class para(object):
     def run(self, cmd):
         try:
             self.getconn_ssh()
-        except:
-            print "Conn error."
+        except Exception:
+            return 1
         else:
             stdin,stdout,stderr = self.conn.exec_command(cmd)
             result=stdout.read()
@@ -40,6 +40,9 @@ class run():
     def run(self, cmds=None):
         for i in self.ips:
             cmd = 'ifconfig %s' %self.dev
+            if r == 1:
+                print 'Error: %s connect failed.' %i
+                continue
             r = para(i, self.pa).run(cmd)
             r_len = len(r.split())
             for j in range(0,r_len):
