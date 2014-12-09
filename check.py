@@ -11,15 +11,6 @@ class para(object):
         self.conn.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.conn.connect(hostname = self.hostname, username = self.username, password = self.password)
         return self.conn
-    def get_response(self, cmd):
-        try:
-            self.getconn_ssh()
-        except:
-            print "Conn error."
-        stdin,stdout,stderr = self.conn.exec_command(cmd)
-        result =  stdout.read()
-        self.conn.close()
-        return result
     def run(self, cmd):
         try:
             self.getconn_ssh()
@@ -32,7 +23,7 @@ class para(object):
             return result
 
 
-class run():
+class check():
     def __init__(self, ips, dev, pa):
         self.ips = ips
         self.dev = dev
@@ -59,6 +50,6 @@ class run():
 
 if __name__ == '__main__':
     ips_1 = ["192.168.1.1", "192.168.1.2"]
-    run(ips_1, 'em1', '123456').run()
+    check(ips_1, 'em1', '123456').run()
     ips_2 = ["192.168.2.1", "192.168.2.2"]
-    run(ips_2, 'br1', '123456').run(['ipmitool chassis bootdev pxe', 'reboot'])
+    check(ips_2, 'br1', '123456').run(['ipmitool chassis bootdev pxe', 'reboot'])
