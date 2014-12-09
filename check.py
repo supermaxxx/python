@@ -31,14 +31,15 @@ class check():
     def run(self, cmds=None):
         for i in self.ips:
             cmd = 'ifconfig %s' %self.dev
+            r = para(i, self.pa).run(cmd)
             if r == 1:
                 print 'Error: %s connect failed.' %i
                 continue
-            r = para(i, self.pa).run(cmd)
+            ip = 'Device error'
             r_len = len(r.split())
             for j in range(0,r_len):
                 if r.split()[j] == 'inet':
-                    ip=r.split()[j+1].replace('addr:','')
+                    ip = r.split()[j+1].replace('addr:','')
             cmd = 'hostname -f'
             r = para(i, self.pa).run(cmd)
             hostname = r.split()[0]
