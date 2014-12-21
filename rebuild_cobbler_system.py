@@ -29,7 +29,7 @@ def rebuild_system(pf, dic):
         if len(add_devs) > 0:
             for i,j in add_devs.items():
                 if len(j) == 4:
-                    _add_gw = '--gateway %s' %j[3]
+                    _add_gw = '--gateway %s' %j[3] if len(j[3])>0 else ''
                 elif len(j) == 3:
                     _add_gw = ''
                 cmd = 'cobbler system edit --name=%s --interface=%s --mac=%s --ip-address=%s --subnet=%s %s --static=1' %(hostname, i, j[0], j[1], j[2], _add_gw)
