@@ -4,6 +4,11 @@
 """
 test openstack-ceilometer-api
 @author: wangyucheng
+{post:   "create"
+ get:    "list"
+ delete: "delete"
+ put:    "update"
+}
 """
 
 import json
@@ -90,7 +95,7 @@ class TestApi:
         response = self._request("http://10.179.203.5:8777/v2/snss/cd4e725b-03ff-4f6b-978a-e5cdef3313af", mod='GET') 
         ##get one
         #response = self._request("http://10.179.203.5:8777/v2/sns/877e74d7-edfa-438a-a25a-706a529563d6", mod='GET')
-        ##delete
+        ##put
         #response = self._request("http://10.179.203.5:8777/v2/sns/e6d925ac-07f5-4008-acb5-3f8d43647eec", {"sns_phone":'111',"sns_desc":'222'}, mod='PUT')
         if response:
             print response
