@@ -4,10 +4,10 @@
 """
 test openstack-ceilometer-api
 @author: wangyucheng
-{post:   "create"
- get:    "list"
- delete: "delete"
- put:    "update"
+mod={'post':   "create",
+     'get':    "list",
+     'delete': "delete",
+     'put':    "update"
 }
 """
 
