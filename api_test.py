@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 
+"""
+test openstack-ceilometer-api
+@author: wangyucheng
+"""
+
 import json
 import urllib2
 import sys
@@ -48,7 +53,7 @@ class TestApi:
         self.header['User-Agent'] = "python-ceilometerclient"
         self.header['X-Auth-Token'] = token_id
         ##get all
-        #response = self._request(self.api_url1, mod='GET')
+        response = self._request(self.api_url1, mod='GET')
         ##get one
         #response = self._request("http://10.179.203.5:8777/v2/groups/fc79338a-b24e-4a04-8047-83e419373d39", mod='GET')
         ##post
@@ -56,7 +61,7 @@ class TestApi:
         ##delete
         #response = self._request("http://10.179.203.5:8777/v2/groups/dad43740-2284-4541-b3e6-045ea57ce054", mod='DELETE')
         ##put
-        response = self._request("http://10.179.203.5:8777/v2/groups/df48c470-d964-435a-8b7c-944c92c95ebb", {"group_name":"xxx"}, mod='PUT')
+        #response = self._request("http://10.179.203.5:8777/v2/groups/df48c470-d964-435a-8b7c-944c92c95ebb", {"group_name":"xxx"}, mod='PUT')
         if response:
             print response
 
@@ -67,11 +72,11 @@ class TestApi:
         ##post
         #response = self._request(self.api_url2, {"email_desc":"this is a test","email_addr":"wangyucheng13@qq.com","group_uuid":"cd4e725b-03ff-4f6b-978a-e5cdef3313af"}) 
         ##get
-        #response = self._request("http://10.179.203.5:8777/v2/email/007e0cf5-c4d9-43c6-8f09-46ee869ce419", mod='GET') 
+        response = self._request("http://10.179.203.5:8777/v2/email/007e0cf5-c4d9-43c6-8f09-46ee869ce419", mod='GET') 
         ##delete
         #response = self._request("http://10.179.203.5:8777/v2/email/4d7420ba-799b-4bc8-b5bb-06081eaf3084", mod='DELETE')
         ##put
-        response = self._request("http://10.179.203.5:8777/v2/email/007e0cf5-c4d9-43c6-8f09-46ee869ce419", {"email_addr":"wyc@163.com"}, mod='PUT')
+        #response = self._request("http://10.179.203.5:8777/v2/email/007e0cf5-c4d9-43c6-8f09-46ee869ce419", {"email_addr":"wyc@163.com"}, mod='PUT')
         if response:
             print response
 
@@ -82,11 +87,11 @@ class TestApi:
         ##post
         #response = self._request(self.api_url3, {"sns_desc":"this is a test3","sns_phone":"113123322","group_uuid":"cd4e725b-03ff-4f6b-978a-e5cdef3313af"}) 
         ##get all
-        #response = self._request("http://10.179.203.5:8777/v2/snss/cd4e725b-03ff-4f6b-978a-e5cdef3313af") 
+        response = self._request("http://10.179.203.5:8777/v2/snss/cd4e725b-03ff-4f6b-978a-e5cdef3313af") 
         ##get one
         #response = self._request("http://10.179.203.5:8777/v2/sns/877e74d7-edfa-438a-a25a-706a529563d6", mod='GET')
         ##delete
-        response = self._request("http://10.179.203.5:8777/v2/sns/e6d925ac-07f5-4008-acb5-3f8d43647eec", {"sns_phone":'111',"sns_desc":'222'}, mod='PUT')
+        #response = self._request("http://10.179.203.5:8777/v2/sns/e6d925ac-07f5-4008-acb5-3f8d43647eec", {"sns_phone":'111',"sns_desc":'222'}, mod='PUT')
         if response:
             print response
 
