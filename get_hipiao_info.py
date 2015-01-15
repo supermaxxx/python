@@ -6,23 +6,76 @@ Created on Fri Feb 14 15:30 2014
 Last Update on Wednesday Nov 12 14:50 2014
 @author: wangyucheng
 '''
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
+'''
+Created on Fri Feb 14 15:30 2014
+@author: wangyucheng
+'''
 import urllib
 from bs4 import BeautifulSoup
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
+import smtplib
+from email.MIMEText import MIMEText
+from email.MIMEMultipart import MIMEMultipart
+
+class Email(object):
+    def __init__(self, MAIL_ADDRESS, MAIL_SUBJECT, MAIL_MESSAGE, ATTACHMENT=None):
+        self.MAIL_HOST = 'smtp.163.com'
+        self.MAIL_USERNAME = '******@163.com'
+        self.MAIL_PASSWORD = '******'
+        self.MAIL_TO = MAIL_ADDRESS # address to mail
+        self.MAIL_SUBJECT = MAIL_SUBJECT  # title of the mail
+        self.MAIL_MESSAGE = MAIL_MESSAGE  # body of the mail
+        self.ATTACHMENT = ATTACHMENT  # attachment
+    def run(self):
+        body = MIMEText(self.MAIL_MESSAGE)
+        msg = MIMEMultipart()
+        msg.attach(body)
+        msg['To'] = self.MAIL_TO
+        msg['from'] = self.MAIL_USERNAME
+        msg['subject'] = self.MAIL_SUBJECT
+        if self.ATTACHMENT != None:
+            attachment = self.ATTACHMENT.split('/')[-1]
+            att = MIMEText(open(self.ATTACHMENT).read(),'base64','gb2312')
+            att["Content-Disposition"] = 'attachment;filename="' + attachment + '"'
+            msg.attach(att)
+        try:
+            session = smtplib.SMTP()
+            session.connect(self.MAIL_HOST)
+            session.login(self.MAIL_USERNAME,self.MAIL_PASSWORD)
+            session.sendmail(self.MAIL_USERNAME,self.MAIL_TO,msg.as_string())
+            session.close()
+            msg = 'Send Email Successfully.'
+            print msg
+        except Exception,e:
+            print e
+
+
+def report_by_email(mail_list, text):
+    _now = datetime.now()
+    now = _now.strftime("%Y-%m-%d %H:%M:%S")
+    title = "hipiao嘉定罗宾森电影院排片表(刷新时间: %s)" %now
+    if text != None:
+        for mail_address in mail_list:
+            Email(mail_address, title, text).run()
 
 def cs(a):
     return a.decode('utf-8')
 
+
 today = date.today()
 tomorrow = today + timedelta(1)
 days = [str(today),str(tomorrow)]
+days = {str(today):"今日", str(tomorrow):"明日"}
 url = 'http://cinema.hipiao.com/dadi_jiading'
 response = urllib.urlopen(url)
 html = response.read()
 soup = BeautifulSoup(html)
-for day in days:
-    msg = cs("<大地数字影院--上海嘉定罗宾森广场--电影排片表--%s>\n\n" %(day.replace('-','/')))
+text = ''  #邮件内容
+for day,value in days.items():
+    msg = cs("<大地数字影院--上海嘉定罗宾森广场--电影排片表--%s(%s)>\n\n" %(day.replace('-','/'),value))
     movieList = soup.findAll('div', attrs={'id':'planDataList'})
     if(movieList):
         lis = movieList[0].findAll('li', attrs={'day':day})
@@ -44,21 +97,25 @@ for day in days:
             cts = li.findAll('div', attrs={'class':'ciname_table'})
             for ct in cts:
                 tr = ct.findAll('tr')
-                msg += cs('放映时间 语种/制式 会员价/原价: \n') 
+                msg += cs('放映时间 语种/制式 影厅 会员价/原价: \n') 
                 for tds in tr:
                     td = tds.findAll('td')
                     if len(td) > 0:
                         sijian = td[0].text    #放映时间
                         yuyan = td[1].text    #语种/制式
+                        yingting = td[2].text    #影厅
                         jiage =  td[4].text[1:] + cs('元/') + td[3].text[1:] + cs('元')    #会员价/原价
-                        msg += sijian + '    ' + yuyan + ' ' + jiage + '\n'
+                        msg += sijian.split()[0] + '    ' + yuyan + ' ' + yingting + ' ' + jiage + '\n'
             msg += '\n'
     m = msg.encode('utf-8')
-    print m
+    text += m
+
+print text
+report_by_email(["306453504@qq.com"], text)
 
 
 
-'''
+"""
 result:
 [root@localhost test]# date
 Sun Feb 16 20:07:03 CST 2014
@@ -166,6 +223,7 @@ Sun Feb 16 20:07:03 CST 2014
 19:40    国语/3D立体 35元/45元
 20:40    国语/3D立体 35元/45元
 21:50    国语/3D立体 35元/45元
-
-
-'''
+...
+...
+Send Email Successfully.
+"""
