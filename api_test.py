@@ -87,7 +87,7 @@ class TestApi:
         ##post
         #response = self._request(self.api_url3, {"sns_desc":"this is a test3","sns_phone":"113123322","group_uuid":"cd4e725b-03ff-4f6b-978a-e5cdef3313af"}) 
         ##get all
-        response = self._request("http://10.179.203.5:8777/v2/snss/cd4e725b-03ff-4f6b-978a-e5cdef3313af") 
+        response = self._request("http://10.179.203.5:8777/v2/snss/cd4e725b-03ff-4f6b-978a-e5cdef3313af", mod='GET') 
         ##get one
         #response = self._request("http://10.179.203.5:8777/v2/sns/877e74d7-edfa-438a-a25a-706a529563d6", mod='GET')
         ##delete
