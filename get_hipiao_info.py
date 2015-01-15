@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 '''
-Created on Fri Feb 14 15:30 2014
-Last Update on Wednesday Nov 12 14:50 2014
+Created on Friday, Feb 14, 15:30, 2014
+Last Update on Thursday, Jan 15, 13:50 2015
 @author: wangyucheng
 '''
 #!/usr/bin/python
