@@ -111,7 +111,7 @@ for day,value in days.items():
     text += m
 
 print text
-report_by_email(["306453504@qq.com"], text)
+report_by_email(["******@qq.com"], text)
 
 
 
