@@ -18,17 +18,24 @@ class task1(Base._task):
         print self.begin.strftime("%Y-%m-%d %H:%M:%S")
 
 if __name__ == '__main__':
+    print "a begin"
     a=task1()
     time.sleep(2)
-    print a.time_cost()
+    print "a cost time: " + str(a.time_cost())
 
+    print "b begin"
     b=task1()
     time.sleep(3)
-    print b.time_cost()
+    print "b cost time: " + str(b.time_cost())
+
+    print "a cost time: " + str(a.time_cost())
 
 #结果
 [root@os3 soft]# python test.py 
-2015-01-26 11:05:58
-2
-2015-01-26 11:06:00
-3
+a begin
+2015-01-26 11:16:10
+a cost time: 2
+b begin
+2015-01-26 11:16:12
+b cost time: 3
+a cost time: 5
