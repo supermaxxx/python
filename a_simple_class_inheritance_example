@@ -15,17 +15,14 @@ import time
 class task1(Base._task):
     def __init__(self):
         super(task1, self).__init__()
-    def run(self):
         print self.begin.strftime("%Y-%m-%d %H:%M:%S")
 
 if __name__ == '__main__':
     a=task1()
-    a.run()
     time.sleep(2)
     print a.time_cost()
 
     b=task1()
-    b.run()
     time.sleep(3)
     print b.time_cost()
 
