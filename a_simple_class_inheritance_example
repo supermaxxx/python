@@ -1,0 +1,37 @@
+#先创建Base.py
+import datetime
+class _task(object):
+    def __init__(self):
+        super(_task, self).__init__()
+        self.begin = datetime.datetime.now()
+    def time_cost(self):
+        end_time = datetime.datetime.now()
+        time_cost_seconds = (end_time - self.begin).seconds
+        return time_cost_seconds
+
+#写脚本test.py
+import Base
+import time
+class task1(Base._task):
+    def __init__(self):
+        super(task1, self).__init__()
+    def run(self):
+        print self.begin.strftime("%Y-%m-%d %H:%M:%S")
+
+if __name__ == '__main__':
+    a=task1()
+    a.run()
+    time.sleep(2)
+    print a.time_cost()
+
+    b=task1()
+    b.run()
+    time.sleep(3)
+    print b.time_cost()
+
+#结果
+[root@os3 soft]# python test.py 
+2015-01-26 11:05:58
+2
+2015-01-26 11:06:00
+3
