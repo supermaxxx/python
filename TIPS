@@ -136,7 +136,7 @@ done
           # ssh -p 22  -CNfg -R 8083:173.20.11.1:80  root@118.192.72.122
 
 
-10> Python计算 π 值到无限位
+10> [Python] 计算 π 值到无限位
 import sys
 k, a, b, a1, b1 = 2, 4, 1, 12, 4
 while 1==1:
@@ -150,4 +150,24 @@ while 1==1:
     a, a1 = 10*(a%b), 10*(a1%b1)
     d, d1 = a//b, a1//b1
 
-11> 
+11> [shell] awk累加计算
+file1:meter_20150202.log
+2015-02-02 23:30:01 - INFO: Start...
+2015-02-02 23:30:11 - INFO: cpu_util_5min: DELETE 315 rows.
+2015-02-02 23:30:26 - INFO: memory_util_5min: DELETE 303 rows.
+2015-02-02 23:30:45 - INFO: disk_5min.read.bytes.rate: DELETE 315 rows.
+......
+2015-02-02 23:31:12 - INFO: End...
+file2:meter_20150203.log
+2015-02-03 00:15:01 - INFO: Start...
+2015-02-03 00:15:09 - INFO: cpu_util_5min: DELETE 315 rows.
+2015-02-03 00:15:17 - INFO: memory_util_5min: DELETE 303 rows.
+2015-02-03 00:15:33 - INFO: disk_5min.read.bytes.rate: DELETE 315 rows.
+......
+2015-02-03 00:16:36 - INFO: End...
+
+#!/bin/bash
+s=`cat /root/vtbin/log/*/meter_*.log |grep rows|awk 'BEGIN{sum=0}{sum=sum+$7}END{print sum}'`
+echo $s' rows have been deleted.'
+[root@localhost ~]# sh get_sum_of_deleted.sh 
+42227410 rows have been deleted.
