@@ -150,15 +150,15 @@ while 1==1:
     a, a1 = 10*(a%b), 10*(a1%b1)
     d, d1 = a//b, a1//b1
 
-11> [shell] awk累加计算
-file1:meter_20150202.log
+11> [Shell] awk累加计算
+# cat meter_20150202.log
 2015-02-02 23:30:01 - INFO: Start...
 2015-02-02 23:30:11 - INFO: cpu_util_5min: DELETE 315 rows.
 2015-02-02 23:30:26 - INFO: memory_util_5min: DELETE 303 rows.
 2015-02-02 23:30:45 - INFO: disk_5min.read.bytes.rate: DELETE 315 rows.
 ......
 2015-02-02 23:31:12 - INFO: End...
-file2:meter_20150203.log
+# cat meter_20150203.log
 2015-02-03 00:15:01 - INFO: Start...
 2015-02-03 00:15:09 - INFO: cpu_util_5min: DELETE 315 rows.
 2015-02-03 00:15:17 - INFO: memory_util_5min: DELETE 303 rows.
@@ -172,4 +172,4 @@ echo $s' rows have been deleted.'
 # sh get_sum_of_deleted.sh 
 42227410 rows have been deleted.
 
-12> 
+12> [
