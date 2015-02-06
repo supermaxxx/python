@@ -166,10 +166,26 @@ while 1==1:
 ......
 2015-02-03 00:16:36 - INFO: End...
 
-# cat get_sum_of_deleted.sh 
+# cat get_sum_of_deleted.sh
+#!/bin/bash
 s=`cat /root/vtbin/log/*/meter_*.log |grep rows|awk 'BEGIN{sum=0}{sum=sum+$7}END{print sum}'`
 echo $s' rows have been deleted.'
 # sh get_sum_of_deleted.sh 
 42227410 rows have been deleted.
 
-12> [
+12> [Shell] 通过命令查找其所属rpm包
+# cat use_command_to_find_rpmname.sh
+#!/bin/bash
+echo -n "Please enter command: "
+read cmd
+if [ -n "$cmd" ]; then
+rpmpath=`which $cmd`
+echo "RPM_PATH: "$rpmpath
+rpmname=`rpm -qf $rpmpath`
+echo "RPM_NAME: "$rpmname
+fi
+
+# sh use_command_to_find_rpmname.sh 
+Please enter command: ifconfig
+RPM_PATH: /usr/sbin/ifconfig
+RPM_NAME: net-tools-2.0-0.17.20131004git.el7.x86_64
