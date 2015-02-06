@@ -166,8 +166,10 @@ file2:meter_20150203.log
 ......
 2015-02-03 00:16:36 - INFO: End...
 
-#!/bin/bash
+# cat get_sum_of_deleted.sh 
 s=`cat /root/vtbin/log/*/meter_*.log |grep rows|awk 'BEGIN{sum=0}{sum=sum+$7}END{print sum}'`
 echo $s' rows have been deleted.'
-[root@localhost ~]# sh get_sum_of_deleted.sh 
+# sh get_sum_of_deleted.sh 
 42227410 rows have been deleted.
+
+12> 
