@@ -179,9 +179,9 @@ echo $s' rows have been deleted.'
 echo -n "Please enter command: "
 read cmd
 if [ -n "$cmd" ]; then
-rpmpath=`which $cmd`
+rpmpath=$(which $cmd)
 echo "RPM_PATH: "$rpmpath
-rpmname=`rpm -qf $rpmpath`
+rpmname=$(rpm -qf $rpmpath)
 echo "RPM_NAME: "$rpmname
 fi
 
