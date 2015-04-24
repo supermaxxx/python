@@ -189,3 +189,14 @@ fi
 Please enter command: df
 BIN_PATH: /usr/bin/df
 RPM_NAME: coreutils-8.22-11.el7.x86_64
+
+13> [Shell] 删除文件名为乱码的文件
+# ls
+-(conn.getFreeMemory())
+# rm -f -\(conn.getFreeMemory\(\)\) 
+rm: invalid option -- '('
+Try `rm ./'-(conn.getFreeMemory())'' to remove the file `-(conn.getFreeMemory())'.
+Try `rm --help' for more information.
+# ls -liaha
+1048595 -rw-r--r--   1 root root  74K Dec 10 17:45 -(conn.getFreeMemory())
+# find . -inum 1048595 -exec rm {} -rf \;  #delete
