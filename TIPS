@@ -150,6 +150,7 @@ while 1==1:
     a, a1 = 10*(a%b), 10*(a1%b1)
     d, d1 = a//b, a1//b1
 
+
 11> [Shell] awk累加计算
 # cat meter_20150202.log
 2015-02-02 23:30:01 - INFO: Start...
@@ -173,6 +174,7 @@ echo $s' rows have been deleted.'
 # sh get_sum_of_deleted.sh 
 42227410 rows have been deleted.
 
+
 12> [Shell] 通过命令查找其所属rpm包
 # cat use_command_to_find_rpmname.sh
 #!/bin/bash
@@ -190,6 +192,7 @@ Please enter command: df
 BIN_PATH: /usr/bin/df
 RPM_NAME: coreutils-8.22-11.el7.x86_64
 
+
 13> [Shell] 删除文件名为乱码的文件
 # ls
 -(conn.getFreeMemory())
@@ -200,3 +203,6 @@ Try `rm --help' for more information.
 # ls -liaha
 1048595 -rw-r--r--   1 root root  74K Dec 10 17:45 -(conn.getFreeMemory())
 # find . -inum 1048595 -exec rm {} -rf \;  #delete
+
+
+14> 
