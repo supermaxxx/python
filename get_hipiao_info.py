@@ -1,18 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-'''
-Created on Friday, Feb 14, 15:30, 2014
-Last Update on Thursday, Jan 15, 13:50 2015
+"""
+Created on Friday, Feb 14, 2014
+Updated on Thursday, May 8, 2015
 @author: wangyucheng
-'''
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+"""
 
-'''
-Created on Fri Feb 14 15:30 2014
-@author: wangyucheng
-'''
 import urllib
 from bs4 import BeautifulSoup
 from datetime import date, timedelta, datetime
@@ -23,8 +17,8 @@ from email.MIMEMultipart import MIMEMultipart
 class Email(object):
     def __init__(self, MAIL_ADDRESS, MAIL_SUBJECT, MAIL_MESSAGE, ATTACHMENT=None):
         self.MAIL_HOST = 'smtp.163.com'
-        self.MAIL_USERNAME = '******@163.com'
-        self.MAIL_PASSWORD = '******'
+        self.MAIL_USERNAME = '??????@163.com'
+        self.MAIL_PASSWORD = '??????'
         self.MAIL_TO = MAIL_ADDRESS # address to mail
         self.MAIL_SUBJECT = MAIL_SUBJECT  # title of the mail
         self.MAIL_MESSAGE = MAIL_MESSAGE  # body of the mail
@@ -84,7 +78,13 @@ for day,value in days.items():
             pm = li['film']    #片名
             ps = li.findAll('p')
             pcs = ps[3].text.split()
-            pc = pcs[2] if len(pcs)==3 else 'Unknown'    #片长
+            _pc = pcs[2] if len(pcs)==3 else 'Unknown'    #片长
+            if _pc != 'Unknown':
+                try:
+                    pc = int(_pc)
+                    pc = str(pc) + cs('分钟')
+                except Exception:
+                    pc = _pc
             dy = ps[0].text.replace(' / ',',').split()[2]    #导演
             yys = ps[1].text.replace(' / ',',').split()[1].split(',')    #演员
             yy = yys[0] + ',' + yys[1] if len(yys) > 1 else yys[0]    #演员（取最多前2个）
@@ -111,119 +111,4 @@ for day,value in days.items():
     text += m
 
 print text
-report_by_email(["******@qq.com"], text)
-
-
-
-"""
-result:
-[root@localhost test]# date
-Sun Feb 16 20:07:03 CST 2014
-[root@localhost test]# python get_hipiao_info.py 
-<大地数字影院--上海嘉定罗宾森广场--电影排片表--2014/02/16>
-
-片名: 澳门风云
-片长: 95分钟
-导演: 王晶
-演员: 周润发,谢霆锋
-地区: 中国,中国香港
-放映时间 语种/制式 会员价/原价: 
-20:40    国语/数字 35元/45元
-21:30    国语/数字 35元/45元
-
-片名: 北京爱情故事
-片长: Unknown
-导演: 陈思诚
-演员: 梁家辉,刘嘉玲
-地区: 中国
-放映时间 语种/制式 会员价/原价: 
-22:20    国语/数字 35元/45元
-
-片名: 林中小屋
-片长: 95分钟
-导演: 邓特希
-演员: 王宗尧,李昕岳
-地区: 中国,中国香港
-放映时间 语种/制式 会员价/原价: 
-22:30    国语/数字 35元/45元
-
-片名: 西游记之大闹天宫
-片长: 120分钟
-导演: 郑保瑞
-演员: 甄子丹,周润发
-地区: 中国,中国香港,美国
-放映时间 语种/制式 会员价/原价: 
-21:40    国语/3D立体 35元/45元
-
-
-<大地数字影院--上海嘉定罗宾森广场--电影排片表--2014/02/17>
-
-片名: 澳门风云
-片长: 95分钟
-导演: 王晶
-演员: 周润发,谢霆锋
-地区: 中国,中国香港
-放映时间 语种/制式 会员价/原价: 
-12:10    国语/数字 30元/40元
-14:00    国语/数字 30元/40元
-15:45    国语/数字 30元/40元
-17:40    国语/数字 30元/40元
-19:30    国语/数字 35元/45元
-21:20    国语/数字 35元/45元
-
-片名: 爸爸去哪儿
-片长: 95分钟
-导演: 谢涤葵,林妍
-演员: 林志颖,小小志
-地区: 中国
-放映时间 语种/制式 会员价/原价: 
-11:30    国语/数字 35元/45元
-13:20    国语/数字 35元/45元
-17:10    国语/数字 35元/45元
-19:00    国语/数字 40元/50元
-
-片名: 北京爱情故事
-片长: Unknown
-导演: 陈思诚
-演员: 梁家辉,刘嘉玲
-地区: 中国
-放映时间 语种/制式 会员价/原价: 
-11:40    国语/数字 30元/40元
-13:50    国语/数字 30元/40元
-16:00    国语/数字 30元/40元
-18:10    国语/数字 35元/45元
-20:20    国语/数字 35元/45元
-
-片名: 冰雪奇缘
-片长: 108分钟
-导演: 克里斯·巴克,珍妮弗·李
-演员: 克里斯汀·贝尔,伊迪娜·门泽尔
-地区: 美国
-放映时间 语种/制式 会员价/原价: 
-11:20    英语/数字 25元/35元
-15:10    英语/数字 25元/35元
-
-片名: 林中小屋
-片长: 95分钟
-导演: 邓特希
-演员: 王宗尧,李昕岳
-地区: 中国,中国香港
-放映时间 语种/制式 会员价/原价: 
-22:30    国语/数字 35元/45元
-
-片名: 西游记之大闹天宫
-片长: 120分钟
-导演: 郑保瑞
-演员: 甄子丹,周润发
-地区: 中国,中国香港,美国
-放映时间 语种/制式 会员价/原价: 
-13:10    国语/3D立体 30元/40元
-15:20    国语/3D立体 30元/40元
-17:30    国语/3D立体 30元/40元
-19:40    国语/3D立体 35元/45元
-20:40    国语/3D立体 35元/45元
-21:50    国语/3D立体 35元/45元
-...
-...
-Send Email Successfully.
-"""
+report_by_email(["??????@qq.com", ], text)
