@@ -85,6 +85,8 @@ for day,value in days.items():
                     pc = str(pc) + cs('分钟')
                 except Exception:
                     pc = _pc
+            else:
+                pc = 'Unknown'
             dy = ps[0].text.replace(' / ',',').split()[2]    #导演
             yys = ps[1].text.replace(' / ',',').split()[1].split(',')    #演员
             yy = yys[0] + ',' + yys[1] if len(yys) > 1 else yys[0]    #演员（取最多前2个）
