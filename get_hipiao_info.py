@@ -79,14 +79,10 @@ for day,value in days.items():
             ps = li.findAll('p')
             pcs = ps[3].text.split()
             _pc = pcs[2] if len(pcs)==3 else 'Unknown'    #片长
-            if _pc != 'Unknown':
-                try:
-                    pc = int(_pc)
-                    pc = str(pc) + cs('分钟')
-                except Exception:
-                    pc = _pc
-            else:
-                pc = 'Unknown'
+            try:
+                pc = str(int(_pc)) + cs('分钟')
+            except Exception:
+                pc = _pc
             dy = ps[0].text.replace(' / ',',').split()[2]    #导演
             yys = ps[1].text.replace(' / ',',').split()[1].split(',')    #演员
             yy = yys[0] + ',' + yys[1] if len(yys) > 1 else yys[0]    #演员（取最多前2个）
