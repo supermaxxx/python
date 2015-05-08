@@ -3,7 +3,7 @@
 
 """
 Created on Friday, Feb 14, 2014
-Updated on Thursday, May 8, 2015
+Updated on Friday, May 8, 2015
 @author: wangyucheng
 """
 
