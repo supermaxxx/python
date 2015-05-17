@@ -3,7 +3,7 @@
 
 """
 Created on Friday, Feb 14, 2014
-Updated on Friday, May 8, 2015
+Last updated on Friday, May 17, 2015
 @author: wangyucheng
 """
 
@@ -102,7 +102,9 @@ for day,value in days.items():
                         sijian = td[0].text    #放映时间
                         yuyan = td[1].text    #语种/制式
                         yingting = td[2].text    #影厅
-                        jiage =  td[4].text[1:] + cs('元/') + td[3].text[1:] + cs('元')    #会员价/原价
+                        jiage_1 = float(td[4].text[1:])
+                        jiage_2 = float(td[3].text[1:])
+                        jiage = str(jiage_1) + cs('元/') + str(jiage_2) + cs('元')    #会员价/原价
                         msg += sijian.split()[0] + '    ' + yuyan + ' ' + yingting + ' ' + jiage + '\n'
             msg += '\n'
     m = msg.encode('utf-8')
