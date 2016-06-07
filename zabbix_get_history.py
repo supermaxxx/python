@@ -64,16 +64,16 @@ if __name__ == "__main__":
     }
     zapi=ZabbixApi(api_info)
     args=[
-        ##add {host:[(key1,history_object_type1),(key2,history_object_type2),...]},
+        ##add {host:[([key1,key2...],history_object_type1),([key5,key6...],history_object_type2),...]},
         ##history_object_type: 0-float; 1-string; 2-log; 3-integer; 4-text. 
-        {"cns-1":[("system.cpu.load[percpu,avg1]",0),
-                  ("vm.memory.size[available]",3),
+        {"cns-1":[(["system.cpu.load[percpu,avg1]","system.cpu.load[percpu,avg5]"],0),
+                  (["vm.memory.size[available]"],3),
                  ]},
-        {"cns-2":[("system.cpu.load[percpu,avg1]",0),
-                  ("vm.memory.size[available]",3),
+        {"cns-2":[(["system.cpu.load[percpu,avg1]","system.cpu.load[percpu,avg5]"],0),
+                  (["vm.memory.size[available]"],3),
                  ]},
-        {"cns-3":[("system.cpu.load[percpu,avg1]",0),
-                  ("vm.memory.size[available]",3),
+        {"cns-3":[(["system.cpu.load[percpu,avg1]","system.cpu.load[percpu,avg5]"],0),
+                  (["vm.memory.size[available]"],3),
                  ]},
     ]
     try:
@@ -96,28 +96,34 @@ if __name__ == "__main__":
                 continue
             host_id=tmp["result"][0]["hostid"]
             for _key in keys:
+                dic={}
                 key=_key[0]
                 history_object_type=int(_key[1])
-                tmp=zapi.run("item.get",{"output":"itemids","hostids":host_id,"search":{"key_":key}})
-                if tmp["result"]==[]:
-                    continue
-                item_id=tmp["result"][0]["itemid"]
-                print "\n\033[0;32m%s\033[0m"  %("Host:"+str(host)+" Key:"+str(key)+" Itemid:"+str(item_id))
-                tmp=zapi.run("history.get",{"history":history_object_type,"itemids":[item_id],"output":"extend",
+                itemids=[]
+                for k in key:
+                    tmp=zapi.run("item.get",{"output":"itemids","hostids":host_id,"search":{"key_":k}})
+                    if tmp["result"]==[]:
+                        continue
+                    item_id=tmp["result"][0]["itemid"]
+                    dic[item_id]=k
+                    itemids.append(item_id)
+                print "\n\033[0;32m%s\033[0m"  %("Host:"+str(host)+" Key:"+str(key)+" Itemid:"+str(itemids))
+                tmp=zapi.run("history.get",{"history":history_object_type,"itemids":itemids,"output":"extend",
                              "time_from":clock_begin,"time_till":clock_end})
                 _data=tmp["result"]
-                print host+": "+key+" "+str(len(_data))+" rows"
+                print host+": "+str(key)+" "+str(len(_data))+" rows"
                 for i in _data:
                     d={}
                     value=i["value"]
                     _clock=i["clock"]
                     clock=time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(float(_clock)))
-                    d["key"]=key
+                    k=dic[i["itemid"]]
+                    d["key"]=k
                     d["host"]=host
                     d["value"]=value
                     d["clock"]=clock
                     data.append(d)
-                    msg='"%s","%s","%s","%s"' %(host,key,value,clock)
+                    msg='"%s","%s","%s","%s"' %(host,k,value,clock)
                     writelogfile(logfile).log(msg)
     print "%s is the output data file." %logfile
-    print len(data)  #it is the data u want.
+    #print len(data)  #it is the data u want.
