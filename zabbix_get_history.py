@@ -107,7 +107,10 @@ if __name__ == "__main__":
                     item_id=tmp["result"][0]["itemid"]
                     dic[item_id]=k
                     itemids.append(item_id)
-                print "\n\033[0;32m%s\033[0m"  %("Host:"+str(host)+" Key:"+str(key)+" Itemid:"+str(itemids))
+                msg=""
+                msg+="Host:"+str(host)+", "
+                msg+=str(["(Key:"+str(m)+",Itemid:"+str(l)+")" for l,m in dic.items()])
+                print "\n\033[0;32m%s\033[0m"  %msg
                 tmp=zapi.run("history.get",{"history":history_object_type,"itemids":itemids,"output":"extend",
                              "time_from":clock_begin,"time_till":clock_end})
                 _data=tmp["result"]
