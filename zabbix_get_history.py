@@ -79,7 +79,7 @@ if __name__ == "__main__":
     try:
         _clock_begin,_clock_end=str(sys.argv[1]),str(sys.argv[2])
     except:
-        print 'Useage: python %s "2016-05-01 00:00:00" "2016-05-31 23:59:59"'  %(sys.argv[0])
+        print 'Usage: python %s "2016-05-01 00:00:00" "2016-05-31 23:59:59"'  %(sys.argv[0])
         sys.exit(1)
     clock_begin=time.mktime(time.strptime(_clock_begin,"%Y-%m-%d %H:%M:%S"))
     clock_end=time.mktime(time.strptime(_clock_end,"%Y-%m-%d %H:%M:%S"))
